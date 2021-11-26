@@ -7,7 +7,7 @@
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zondax/ledger-kusama"
+    "url": "git+https://github.com/Zondax/ledger-polkadex"
   },
   "keywords": [
     "Zondax",

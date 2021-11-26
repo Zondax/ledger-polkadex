@@ -28,10 +28,10 @@ extern "C" {
 #define HDPATH_3_DEFAULT     (0u)
 #define HDPATH_4_DEFAULT     (0u)
 
-#define MENU_MAIN_APP_LINE1                 "Kusama"
+#define MENU_MAIN_APP_LINE1                 "Polkadex"
 #define MENU_MAIN_APP_LINE2                 "Ready"
 #define MENU_MAIN_APP_LINE2_SECRET          "KSM RECOVERY"
-#define APPVERSION_LINE1                    "Kusama"
+#define APPVERSION_LINE1                    "Polkadex"
 #define APPVERSION_LINE2                    "v" APPVERSION
 
 #ifdef __cplusplus

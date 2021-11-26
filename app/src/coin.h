@@ -23,7 +23,7 @@ extern "C" {
 
 #define HDPATH_LEN_DEFAULT   5
 #define HDPATH_0_DEFAULT     (0x80000000 | 0x2c)
-#define HDPATH_1_DEFAULT     (0x80000000 | 0x1b2)       // 434 - Kusama
+#define HDPATH_1_DEFAULT     (0x80000000 | 0x1b2)       // 434 - Polkadex
 #define HDPATH_1_RECOVERY    (0x80000000 | 0x162)       // 354 - Polkadot
 
 #define SK_LEN_25519         64u
@@ -53,7 +53,7 @@ typedef enum {
 #define COIN_AMOUNT_DECIMAL_PLACES          12
 
 #define COIN_GENESIS_HASH                   "b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"
-#define COIN_NAME                           "Kusama"
+#define COIN_NAME                           "Polkadex"
 #define COIN_TICKER                         "KSM "
 
 #define COIN_SECRET_REQUIRED_CLICKS         10

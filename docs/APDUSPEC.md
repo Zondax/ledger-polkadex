@@ -1,4 +1,4 @@
-# Kusama App
+# Polkadex App
 
 ## General structure
 

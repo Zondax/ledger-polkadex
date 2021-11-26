@@ -75,13 +75,13 @@ DEFINES += APP_STANDARD
 ifeq ($(TARGET_NAME),TARGET_NANOX)
 DEFINES += SUBSTRATE_PARSER_FULL
 endif
-APPNAME = "Kusama"
+APPNAME = "Polkadex"
 APPPATH = "44'/434'" --path "44'/354'"
 
 else ifeq ($(COIN),KSM_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
-APPNAME = "Kusama XL"
+APPNAME = "Polkadex XL"
 APPPATH = "44'/434'"  --path "44'/354'"
 
 else

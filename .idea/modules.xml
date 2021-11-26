@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ledger-kusama.iml" filepath="$PROJECT_DIR$/.idea/ledger-kusama.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ledger-polkadex.iml" filepath="$PROJECT_DIR$/.idea/ledger-polkadex.iml" />
     </modules>
   </component>
 </project>
