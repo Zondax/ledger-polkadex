@@ -52,7 +52,7 @@ typedef enum {
 
 #define COIN_AMOUNT_DECIMAL_PLACES          12
 
-#define COIN_GENESIS_HASH                   "0000000000000000000000000000000000000000000000000000000000000000"
+#define COIN_GENESIS_HASH                   "3920bcb4960a1eef5580cd5367ff3f430eef052774f78468852f7b9cb39f8a3c"
 #define COIN_NAME                           "Polkadex"
 #define COIN_TICKER                         "MUNIT "
 
