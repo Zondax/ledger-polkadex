@@ -54,7 +54,7 @@ typedef enum {
 
 #define COIN_GENESIS_HASH                   "0000000000000000000000000000000000000000000000000000000000000000"
 #define COIN_NAME                           "Polkadex"
-#define COIN_TICKER                         "MUNIT "
+#define COIN_TICKER                         "PDEX"
 
 #define COIN_SECRET_REQUIRED_CLICKS         0
 
