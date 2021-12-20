@@ -124,7 +124,7 @@ Empty
 |scale_validator_count |    |   |   | `Percent` factor <br/> | 
 |force_no_eras |    | :heavy_check_mark: |   |  | 
 |force_new_era |    | :heavy_check_mark: |   |  | 
-|set_invulnerables |    | :heavy_check_mark: |   | `Vec<AccountId>` invulnerables <br/> | 
+|set_invulnerables |    |   |   | `Vec<AccountId>` invulnerables <br/> | 
 |force_unstake |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> | 
 |force_new_era_always |    | :heavy_check_mark: |   |  | 
 |cancel_deferred_slash |    | :heavy_check_mark: |   | `EraIndex` era <br/>`Vec<u32>` slash_indices <br/> | 
@@ -321,7 +321,7 @@ Empty
 |claim |    | :heavy_check_mark: |   |  | 
 |vested_transfer |    |   |   | `LookupSource` dest <br/>`VestingScheduleOf` schedule <br/> | 
 |update_vesting_schedules |    |   |   | `LookupSource` who <br/>`Vec<VestingScheduleOf>` vesting_schedules <br/> | 
-|claim_for |    | :heavy_check_mark: |   | `LookupSource` dest <br/> | 
+|claim_for |    |   |   | `LookupSource` dest <br/> | 
 
 ## PDEXMigration
 

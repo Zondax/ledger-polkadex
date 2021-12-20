@@ -155,11 +155,6 @@ typedef struct {
 typedef struct {
 } pd_staking_force_new_era_V2_t;
 
-#define PD_CALL_STAKING_SET_INVULNERABLES_V2 14
-typedef struct {
-    pd_VecAccountId_V2_t invulnerables;
-} pd_staking_set_invulnerables_V2_t;
-
 #define PD_CALL_STAKING_FORCE_UNSTAKE_V2 15
 typedef struct {
     pd_AccountId_V2_t stash;
@@ -591,11 +586,6 @@ typedef struct {
 typedef struct {
 } pd_ormlvesting_claim_V2_t;
 
-#define PD_CALL_ORMLVESTING_CLAIM_FOR_V2 3
-typedef struct {
-    pd_LookupSource_V2_t dest;
-} pd_ormlvesting_claim_for_V2_t;
-
 #define PD_CALL_PDEXMIGRATION_SET_MIGRATION_OPERATIONAL_STATUS_V2 0
 typedef struct {
     pd_bool_t status;
@@ -648,7 +638,6 @@ typedef union {
     pd_staking_increase_validator_count_V2_t staking_increase_validator_count_V2;
     pd_staking_force_no_eras_V2_t staking_force_no_eras_V2;
     pd_staking_force_new_era_V2_t staking_force_new_era_V2;
-    pd_staking_set_invulnerables_V2_t staking_set_invulnerables_V2;
     pd_staking_force_unstake_V2_t staking_force_unstake_V2;
     pd_staking_force_new_era_always_V2_t staking_force_new_era_always_V2;
     pd_staking_cancel_deferred_slash_V2_t staking_cancel_deferred_slash_V2;
@@ -725,7 +714,6 @@ typedef union {
     pd_bounties_close_bounty_V2_t bounties_close_bounty_V2;
     pd_bounties_extend_bounty_expiry_V2_t bounties_extend_bounty_expiry_V2;
     pd_ormlvesting_claim_V2_t ormlvesting_claim_V2;
-    pd_ormlvesting_claim_for_V2_t ormlvesting_claim_for_V2;
     pd_pdexmigration_set_migration_operational_status_V2_t pdexmigration_set_migration_operational_status_V2;
     pd_pdexmigration_set_relayer_status_V2_t pdexmigration_set_relayer_status_V2;
     pd_pdexmigration_mint_V2_t pdexmigration_mint_V2;

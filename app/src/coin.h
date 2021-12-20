@@ -23,7 +23,7 @@ extern "C" {
 
 #define HDPATH_LEN_DEFAULT   5
 #define HDPATH_0_DEFAULT     (0x80000000 | 0x2c)
-#define HDPATH_1_DEFAULT     (0x80000000 | 0x1b2)       // 434 - Polkadex
+#define HDPATH_1_DEFAULT     (0x80000000 | 0x31f)       // 434 - Polkadex
 #define HDPATH_1_RECOVERY    (0x80000000 | 0x162)       // 354 - Polkadot
 
 #define SK_LEN_25519         64u
@@ -54,7 +54,7 @@ typedef enum {
 
 #define COIN_GENESIS_HASH                   "3920bcb4960a1eef5580cd5367ff3f430eef052774f78468852f7b9cb39f8a3c"
 #define COIN_NAME                           "Polkadex"
-#define COIN_TICKER                         "PDEX"
+#define COIN_TICKER                         "PDEX "
 
 #define COIN_SECRET_REQUIRED_CLICKS         0
 

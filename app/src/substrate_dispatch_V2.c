@@ -238,13 +238,6 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V2(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_staking_set_invulnerables_V2(
-    parser_context_t* c, pd_staking_set_invulnerables_V2_t* m)
-{
-    CHECK_ERROR(_readVecAccountId_V2(c, &m->invulnerables))
-    return parser_ok;
-}
-
 __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V2(
     parser_context_t* c, pd_staking_force_unstake_V2_t* m)
 {
@@ -878,13 +871,6 @@ __Z_INLINE parser_error_t _readMethod_ormlvesting_claim_V2(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_ormlvesting_claim_for_V2(
-    parser_context_t* c, pd_ormlvesting_claim_for_V2_t* m)
-{
-    CHECK_ERROR(_readLookupSource_V2(c, &m->dest))
-    return parser_ok;
-}
-
 __Z_INLINE parser_error_t _readMethod_pdexmigration_set_migration_operational_status_V2(
     parser_context_t* c, pd_pdexmigration_set_migration_operational_status_V2_t* m)
 {
@@ -1025,9 +1011,6 @@ parser_error_t _readMethod_V2(
         break;
     case 2317: /* module 9 call 13 */
         CHECK_ERROR(_readMethod_staking_force_new_era_V2(c, &method->basic.staking_force_new_era_V2))
-        break;
-    case 2318: /* module 9 call 14 */
-        CHECK_ERROR(_readMethod_staking_set_invulnerables_V2(c, &method->basic.staking_set_invulnerables_V2))
         break;
     case 2319: /* module 9 call 15 */
         CHECK_ERROR(_readMethod_staking_force_unstake_V2(c, &method->basic.staking_force_unstake_V2))
@@ -1271,9 +1254,6 @@ parser_error_t _readMethod_V2(
         break;
     case 7168: /* module 28 call 0 */
         CHECK_ERROR(_readMethod_ormlvesting_claim_V2(c, &method->basic.ormlvesting_claim_V2))
-        break;
-    case 7171: /* module 28 call 3 */
-        CHECK_ERROR(_readMethod_ormlvesting_claim_for_V2(c, &method->basic.ormlvesting_claim_for_V2))
         break;
     case 7424: /* module 29 call 0 */
         CHECK_ERROR(_readMethod_pdexmigration_set_migration_operational_status_V2(c, &method->basic.pdexmigration_set_migration_operational_status_V2))
@@ -1749,8 +1729,6 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 0;
     case 2317: /* module 9 call 13 */
         return 0;
-    case 2318: /* module 9 call 14 */
-        return 1;
     case 2319: /* module 9 call 15 */
         return 2;
     case 2320: /* module 9 call 16 */
@@ -1913,8 +1891,6 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 7168: /* module 28 call 0 */
         return 0;
-    case 7171: /* module 28 call 3 */
-        return 1;
     case 7424: /* module 29 call 0 */
         return 1;
     case 7425: /* module 29 call 1 */
@@ -2162,13 +2138,6 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         }
     case 2317: /* module 9 call 13 */
         switch (itemIdx) {
-        default:
-            return NULL;
-        }
-    case 2318: /* module 9 call 14 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_invulnerables;
         default:
             return NULL;
         }
@@ -2871,13 +2840,6 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 7171: /* module 28 call 3 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_dest;
-        default:
-            return NULL;
-        }
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0:
@@ -3272,16 +3234,6 @@ parser_error_t _getMethod_ItemValue_V2(
         }
     case 2317: /* module 9 call 13 */
         switch (itemIdx) {
-        default:
-            return parser_no_data;
-        }
-    case 2318: /* module 9 call 14 */
-        switch (itemIdx) {
-        case 0: /* staking_set_invulnerables_V2 - invulnerables */;
-            return _toStringVecAccountId_V2(
-                &m->basic.staking_set_invulnerables_V2.invulnerables,
-                outValue, outValueLen,
-                pageIdx, pageCount);
         default:
             return parser_no_data;
         }
@@ -4425,16 +4377,6 @@ parser_error_t _getMethod_ItemValue_V2(
         default:
             return parser_no_data;
         }
-    case 7171: /* module 28 call 3 */
-        switch (itemIdx) {
-        case 0: /* ormlvesting_claim_for_V2 - dest */;
-            return _toStringLookupSource_V2(
-                &m->basic.ormlvesting_claim_for_V2.dest,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* pdexmigration_set_migration_operational_status_V2 - status */;
@@ -4560,7 +4502,6 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 2314: // Staking:Increase validator count
     case 2316: // Staking:Force no eras
     case 2317: // Staking:Force new era
-    case 2318: // Staking:Set invulnerables
     case 2319: // Staking:Force unstake
     case 2320: // Staking:Force new era always
     case 2321: // Staking:Cancel deferred slash
@@ -4638,7 +4579,6 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 6919: // Bounties:Close bounty
     case 6920: // Bounties:Extend bounty expiry
     case 7168: // OrmlVesting:Claim
-    case 7171: // OrmlVesting:Claim for
     case 7424: // PDEXMigration:Set migration operational status
     case 7425: // PDEXMigration:Set relayer status
     case 7426: // PDEXMigration:Mint
