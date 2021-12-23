@@ -43,15 +43,15 @@ Please:
 |set_storage |    |   |   | `Vec<KeyValue>` items <br/> | 
 |kill_storage |    |   |   | `Vec<Key>` keys <br/> | 
 |kill_prefix |    |   |   | `Key` prefix <br/>`u32` _subkeys <br/> | 
-|remark_with_event |    | :heavy_check_mark: |   | `Bytes` remark <br/> | 
+|remark_with_event |    | :heavy_check_mark: | :heavy_check_mark: | `Bytes` remark <br/> | 
 
 ## Utility
 
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|batch |    |   |   | `Vec<Call>` calls <br/> | 
+|batch | :heavy_check_mark:  | :heavy_check_mark: |   | `Vec<Call>` calls <br/> | 
 |as_derivative |    |   |   | `u16` index <br/>`Call` call <br/> | 
-|batch_all |    |   |   | `Vec<Call>` calls <br/> | 
+|batch_all | :heavy_check_mark:  | :heavy_check_mark: |   | `Vec<Call>` calls <br/> | 
 
 ## Babe
 

@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #include "bignum.h"
 #include "coin.h"
 #include "parser_impl.h"
@@ -84,6 +84,11 @@ parser_error_t _readChangesTrieConfiguration_V2(parser_context_t* c, pd_ChangesT
     return parser_ok;
 }
 
+parser_error_t _readCompactAccountIndex_V2(parser_context_t* c, pd_CompactAccountIndex_V2_t* v)
+{
+    return _readCompactInt(c, &v->value);
+}
+
 parser_error_t _readCompactPerBill_V2(parser_context_t* c, pd_CompactPerBill_V2_t* v)
 {
     return _readCompactInt(c, &v->value);
@@ -141,13 +146,33 @@ parser_error_t _readKey_V2(parser_context_t* c, pd_Key_V2_t* v) {
     GEN_DEF_READARRAY(32)
 }
 
-parser_error_t _readKeys_V2(parser_context_t* c, pd_Keys_V2_t* v)
-{
-    return parser_not_supported;
+parser_error_t _readKeys_V2(parser_context_t* c, pd_Keys_V2_t* v) {
+    GEN_DEF_READARRAY(4 * 32)
 }
 
-parser_error_t _readLookupSource_V2(parser_context_t* c, pd_LookupSource_V2_t* v) {
-    GEN_DEF_READARRAY(32)
+parser_error_t _readLookupSource_V2(parser_context_t* c, pd_LookupSource_V2_t* v)
+{
+    CHECK_INPUT();
+    CHECK_ERROR(_readUInt8(c, &v->value))
+    switch (v->value) {
+    case 0: // Id
+        CHECK_ERROR(_readAccountId_V2(c, &v->id))
+        break;
+    case 1: // Index
+        CHECK_ERROR(_readCompactAccountIndex_V2(c, &v->index))
+        break;
+    case 2: // Raw
+        CHECK_ERROR(_readBytes(c, &v->raw))
+        break;
+    case 3: // Address32
+        GEN_DEF_READARRAY(32)
+    case 4: // Address20
+        GEN_DEF_READARRAY(20)
+    default:
+        return parser_unexpected_value;
+    }
+
+    return parser_ok;
 }
 
 parser_error_t _readMemberCount_V2(parser_context_t* c, pd_MemberCount_V2_t* v)
@@ -513,6 +538,16 @@ parser_error_t _toStringChangesTrieConfiguration_V2(
     return parser_display_idx_out_of_range;
 }
 
+parser_error_t _toStringCompactAccountIndex_V2(
+    const pd_CompactAccountIndex_V2_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    return _toStringCompactInt(&v->value, 0, "", "", outValue, outValueLen, pageIdx, pageCount);
+}
+
 parser_error_t _toStringCompactPerBill_V2(
     const pd_CompactPerBill_V2_t* v,
     char* outValue,
@@ -729,10 +764,8 @@ parser_error_t _toStringKeys_V2(
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    CLEAN_AND_CHECK()
-    return parser_print_not_supported;
+    uint8_t* pageCount) {
+    GEN_DEF_TOSTRING_ARRAY(4 * 32)
 }
 
 parser_error_t _toStringLookupSource_V2(
@@ -742,7 +775,30 @@ parser_error_t _toStringLookupSource_V2(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    return _toStringPubkeyAsAddress(v->_ptr, outValue, outValueLen, pageIdx, pageCount);
+    CLEAN_AND_CHECK()
+    switch (v->value) {
+    case 0: // Id
+        CHECK_ERROR(_toStringAccountId_V2(&v->id, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 1: // Index
+        CHECK_ERROR(_toStringCompactAccountIndex_V2(&v->index, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 2: // Raw
+        CHECK_ERROR(_toStringBytes(&v->raw, outValue, outValueLen, pageIdx, pageCount))
+        break;
+    case 3: // Address32
+    {
+        GEN_DEF_TOSTRING_ARRAY(32)
+    }
+    case 4: // Address20
+    {
+        GEN_DEF_TOSTRING_ARRAY(20)
+    }
+    default:
+        return parser_not_supported;
+    }
+
+    return parser_ok;
 }
 
 parser_error_t _toStringMemberCount_V2(
