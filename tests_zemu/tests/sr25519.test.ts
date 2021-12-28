@@ -33,6 +33,9 @@ const defaultOptions = {
   X11: false,
 }
 
+const expected_address = 'esoMp6FKq5re3AiZVTR5UnJqieSPoHT6aaBt3v3SXB1ZCuK8p'
+const expected_pk = '72b89b4dad49ef0f52dc3dc75115fccc46be6ddb3e8ff173b5a38544de0f980a'
+
 jest.setTimeout(180000)
 
 beforeAll(async () => {
@@ -52,9 +55,6 @@ describe('SR25519', function () {
 
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
-
-      const expected_address = 'Cz4vu6J2NHP977ZYZcMCdjmmLgmddKvXRi5TxecuTgFfKww'
-      const expected_pk = '121cc87d316d311fe3e3b9c34b1083a29c55f6ebd214b60f59578b0a37007424'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -80,9 +80,6 @@ describe('SR25519', function () {
 
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
-
-      const expected_address = 'Cz4vu6J2NHP977ZYZcMCdjmmLgmddKvXRi5TxecuTgFfKww'
-      const expected_pk = '121cc87d316d311fe3e3b9c34b1083a29c55f6ebd214b60f59578b0a37007424'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -273,7 +270,7 @@ describe('SR25519', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', 's-sign_large_nomination', 8)
+      await sim.compareSnapshotsAndAccept('.', 's-sign_large_nomination', 10)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
