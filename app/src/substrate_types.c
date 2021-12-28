@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 
 #include "bignum.h"
 #include "coin.h"
@@ -147,6 +147,19 @@ parser_error_t _readData(parser_context_t* c, pd_Data_t* v)
     }
 }
 
+parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
+{
+    CHECK_INPUT()
+
+    compactInt_t clen;
+    CHECK_ERROR(_readCompactInt(c, &clen))
+    CHECK_ERROR(_getValue(&clen, &v->_len))
+
+    v->_ptr = c->buffer + c->offset;
+    CTX_CHECK_AND_ADVANCE(c, v->_len);
+    return parser_ok;
+}
+
 parser_error_t _readTupleDataData(parser_context_t* c, pd_TupleDataData_t* v)
 {
     CHECK_INPUT();
@@ -221,19 +234,6 @@ parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
     v->_lenBuffer = c->offset - v->_lenBuffer;
     v->callTxVersion = c->tx_obj->transactionVersion;
 
-    return parser_ok;
-}
-
-parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
-{
-    CHECK_INPUT()
-
-    compactInt_t clen;
-    CHECK_ERROR(_readCompactInt(c, &clen))
-    CHECK_ERROR(_getValue(&clen, &v->_len))
-
-    v->_ptr = c->buffer + c->offset;
-    CTX_CHECK_AND_ADVANCE(c, v->_len);
     return parser_ok;
 }
 
@@ -452,6 +452,16 @@ parser_error_t _toStringData(
     }
 
     return parser_print_not_supported;
+}
+
+parser_error_t _toStringBytes(
+    const pd_Bytes_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    GEN_DEF_TOSTRING_ARRAY(v->_len);
 }
 
 parser_error_t _toStringTupleDataData(
@@ -709,16 +719,6 @@ parser_error_t _toStringVecCall(
     }
 
     return parser_print_not_supported;
-}
-
-parser_error_t _toStringBytes(
-    const pd_Bytes_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    GEN_DEF_TOSTRING_ARRAY(v->_len);
 }
 
 parser_error_t _toStringCompactBalanceOf(

@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2021 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2021 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -207,7 +207,6 @@ static const char* STR_IT_now = "Now";
 static const char* STR_IT_new_ = "New";
 static const char* STR_IT_freeze = "Freeze";
 static const char* STR_IT_dest = "Dest";
-static const char* STR_IT_value = "Value";
 static const char* STR_IT_who = "Who";
 static const char* STR_IT_new_free = "New free";
 static const char* STR_IT_new_reserved = "New reserved";
@@ -300,6 +299,7 @@ static const char* STR_IT_status = "Status";
 static const char* STR_IT_relayer = "Relayer";
 static const char* STR_IT_amount = "Amount";
 static const char* STR_IT_eth_tx = "Eth tx";
+static const char* STR_IT_value = "Amount";
 
 #ifdef __cplusplus
 }

@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -87,6 +87,11 @@ typedef struct {
 } pd_Data_t;
 
 typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+} pd_Bytes_t;
+
+typedef struct {
     pd_Data_t data1;
     pd_Data_t data2;
 } pd_TupleDataData_t;
@@ -135,11 +140,6 @@ typedef struct {
     uint64_t _lenBuffer;
     uint32_t callTxVersion;
 } pd_VecCall_t;
-
-typedef struct {
-    uint64_t _len;
-    const uint8_t* _ptr;
-} pd_Bytes_t;
 
 typedef struct {
     compactInt_t value;

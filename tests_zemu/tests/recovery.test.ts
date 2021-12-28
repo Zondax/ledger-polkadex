@@ -42,10 +42,7 @@ async function activateSecretMode(sim: any) {
     await sim.clickBoth()
   }
 
-  let reviewSteps = 7
-  if (sim.startOptions.model === 'nanox') {
-    reviewSteps = 6
-  }
+  let reviewSteps = 1
 
   // Review warning message
   for (let i = 0; i < reviewSteps; i += 1) {
@@ -63,10 +60,10 @@ describe('Standard', function () {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = newPolkadexApp(sim.getTransport())
 
-      const polkadex_expected_address = 'JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R'
-      const polkadex_expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
-      const polkadot_expected_address = 'HgG1gzDdu16uEQYpjM2P6DMDVJBfqHtrneNUg476XZxbFnW'
-      const polkadot_expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
+      const polkadex_expected_address = 'esqUXfjDQV1P5jPtqrrL6MvF2KFjJWtk45TmVdAHWRGv9Efim'
+      const polkadex_expected_pk = 'd05081ebecf4f0c61e7e992696fc6c8b537533630c15642599f3c23f8d6db83d'
+      const polkadot_expected_address = 'esqUXfjDQV1P5jPtqrrL6MvF2KFjJWtk45TmVdAHWRGv9Efim'
+      const polkadot_expected_pk = 'd05081ebecf4f0c61e7e992696fc6c8b537533630c15642599f3c23f8d6db83d'
 
       let resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
       console.log(resp)

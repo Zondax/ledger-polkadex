@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- ********************************************************************************/
+*  (c) 2019 Zondax GmbH
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+********************************************************************************/
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wextern-c-compat"
 #pragma once
@@ -27,6 +27,7 @@ extern "C" {
 #include <stdint.h>
 
 #define PD_CALL_SYSTEM_V2 0
+#define PD_CALL_UTILITY_V2 1
 #define PD_CALL_TIMESTAMP_V2 3
 #define PD_CALL_INDICES_V2 5
 #define PD_CALL_BALANCES_V2 6
@@ -47,6 +48,22 @@ extern "C" {
 #define PD_CALL_ORMLVESTING_V2 28
 #define PD_CALL_PDEXMIGRATION_V2 29
 
+#define PD_CALL_UTILITY_BATCH_V2 0
+typedef struct {
+    pd_VecCall_t calls;
+} pd_utility_batch_V2_t;
+
+#define PD_CALL_UTILITY_BATCH_ALL_V2 2
+typedef struct {
+    pd_VecCall_t calls;
+} pd_utility_batch_all_V2_t;
+
+#define PD_CALL_BALANCES_TRANSFER_ALL_V2 4
+typedef struct {
+    pd_LookupSource_V2_t dest;
+    pd_bool_t keep_alive;
+} pd_balances_transfer_all_V2_t;
+
 #define PD_CALL_STAKING_BOND_V2 0
 typedef struct {
     pd_LookupSource_V2_t controller;
@@ -54,10 +71,20 @@ typedef struct {
     pd_RewardDestination_V2_t payee;
 } pd_staking_bond_V2_t;
 
+#define PD_CALL_STAKING_BOND_EXTRA_V2 1
+typedef struct {
+    pd_CompactBalanceOf_t max_additional;
+} pd_staking_bond_extra_V2_t;
+
 #define PD_CALL_STAKING_UNBOND_V2 2
 typedef struct {
     pd_CompactBalanceOf_t value;
 } pd_staking_unbond_V2_t;
+
+#define PD_CALL_STAKING_WITHDRAW_UNBONDED_V2 3
+typedef struct {
+    pd_u32_t num_slashing_spans;
+} pd_staking_withdraw_unbonded_V2_t;
 
 #define PD_CALL_STAKING_VALIDATE_V2 4
 typedef struct {
@@ -73,16 +100,38 @@ typedef struct {
 typedef struct {
 } pd_staking_chill_V2_t;
 
+#define PD_CALL_STAKING_SET_PAYEE_V2 7
+typedef struct {
+    pd_RewardDestination_V2_t payee;
+} pd_staking_set_payee_V2_t;
+
+#define PD_CALL_STAKING_SET_CONTROLLER_V2 8
+typedef struct {
+    pd_LookupSource_V2_t controller;
+} pd_staking_set_controller_V2_t;
+
+#define PD_CALL_STAKING_PAYOUT_STAKERS_V2 18
+typedef struct {
+    pd_AccountId_V2_t validator_stash;
+    pd_EraIndex_V2_t era;
+} pd_staking_payout_stakers_V2_t;
+
 #define PD_CALL_STAKING_REBOND_V2 19
 typedef struct {
     pd_CompactBalanceOf_t value;
 } pd_staking_rebond_V2_t;
 
-#ifdef SUBSTRATE_PARSER_FULL
-#define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V2 9
+#define PD_CALL_SESSION_SET_KEYS_V2 0
 typedef struct {
-    pd_Bytes_t remark;
-} pd_system_remark_with_event_V2_t;
+    pd_Keys_V2_t keys;
+    pd_Bytes_t proof;
+} pd_session_set_keys_V2_t;
+
+#define PD_CALL_SESSION_PURGE_KEYS_V2 1
+typedef struct {
+} pd_session_purge_keys_V2_t;
+
+#ifdef SUBSTRATE_PARSER_FULL
 
 #define PD_CALL_TIMESTAMP_SET_V2 0
 typedef struct {
@@ -111,32 +160,6 @@ typedef struct {
     pd_AccountIndex_V2_t index;
 } pd_indices_freeze_V2_t;
 
-#define PD_CALL_BALANCES_TRANSFER_ALL_V2 4
-typedef struct {
-    pd_LookupSource_V2_t dest;
-    pd_bool_t keep_alive;
-} pd_balances_transfer_all_V2_t;
-
-#define PD_CALL_STAKING_BOND_EXTRA_V2 1
-typedef struct {
-    pd_CompactBalanceOf_t max_additional;
-} pd_staking_bond_extra_V2_t;
-
-#define PD_CALL_STAKING_WITHDRAW_UNBONDED_V2 3
-typedef struct {
-    pd_u32_t num_slashing_spans;
-} pd_staking_withdraw_unbonded_V2_t;
-
-#define PD_CALL_STAKING_SET_PAYEE_V2 7
-typedef struct {
-    pd_RewardDestination_V2_t payee;
-} pd_staking_set_payee_V2_t;
-
-#define PD_CALL_STAKING_SET_CONTROLLER_V2 8
-typedef struct {
-    pd_LookupSource_V2_t controller;
-} pd_staking_set_controller_V2_t;
-
 #define PD_CALL_STAKING_SET_VALIDATOR_COUNT_V2 9
 typedef struct {
     pd_Compactu32_t new_;
@@ -155,11 +178,6 @@ typedef struct {
 typedef struct {
 } pd_staking_force_new_era_V2_t;
 
-#define PD_CALL_STAKING_SET_INVULNERABLES_V2 14
-typedef struct {
-    pd_VecAccountId_V2_t invulnerables;
-} pd_staking_set_invulnerables_V2_t;
-
 #define PD_CALL_STAKING_FORCE_UNSTAKE_V2 15
 typedef struct {
     pd_AccountId_V2_t stash;
@@ -175,12 +193,6 @@ typedef struct {
     pd_EraIndex_V2_t era;
     pd_Vecu32_t slash_indices;
 } pd_staking_cancel_deferred_slash_V2_t;
-
-#define PD_CALL_STAKING_PAYOUT_STAKERS_V2 18
-typedef struct {
-    pd_AccountId_V2_t validator_stash;
-    pd_EraIndex_V2_t era;
-} pd_staking_payout_stakers_V2_t;
 
 #define PD_CALL_STAKING_SET_HISTORY_DEPTH_V2 20
 typedef struct {
@@ -198,16 +210,6 @@ typedef struct {
 typedef struct {
     pd_AccountId_V2_t controller;
 } pd_staking_chill_other_V2_t;
-
-#define PD_CALL_SESSION_SET_KEYS_V2 0
-typedef struct {
-    pd_Keys_V2_t keys;
-    pd_Bytes_t proof;
-} pd_session_set_keys_V2_t;
-
-#define PD_CALL_SESSION_PURGE_KEYS_V2 1
-typedef struct {
-} pd_session_purge_keys_V2_t;
 
 #define PD_CALL_COUNCIL_SET_MEMBERS_V2 0
 typedef struct {
@@ -591,11 +593,6 @@ typedef struct {
 typedef struct {
 } pd_ormlvesting_claim_V2_t;
 
-#define PD_CALL_ORMLVESTING_CLAIM_FOR_V2 3
-typedef struct {
-    pd_LookupSource_V2_t dest;
-} pd_ormlvesting_claim_for_V2_t;
-
 #define PD_CALL_PDEXMIGRATION_SET_MIGRATION_OPERATIONAL_STATUS_V2 0
 typedef struct {
     pd_bool_t status;
@@ -626,38 +623,38 @@ typedef struct {
 #endif
 
 typedef union {
+    pd_utility_batch_V2_t utility_batch_V2;
+    pd_utility_batch_all_V2_t utility_batch_all_V2;
+    pd_balances_transfer_all_V2_t balances_transfer_all_V2;
     pd_staking_bond_V2_t staking_bond_V2;
+    pd_staking_bond_extra_V2_t staking_bond_extra_V2;
     pd_staking_unbond_V2_t staking_unbond_V2;
+    pd_staking_withdraw_unbonded_V2_t staking_withdraw_unbonded_V2;
     pd_staking_validate_V2_t staking_validate_V2;
     pd_staking_nominate_V2_t staking_nominate_V2;
     pd_staking_chill_V2_t staking_chill_V2;
+    pd_staking_set_payee_V2_t staking_set_payee_V2;
+    pd_staking_set_controller_V2_t staking_set_controller_V2;
+    pd_staking_payout_stakers_V2_t staking_payout_stakers_V2;
     pd_staking_rebond_V2_t staking_rebond_V2;
+    pd_session_set_keys_V2_t session_set_keys_V2;
+    pd_session_purge_keys_V2_t session_purge_keys_V2;
 #ifdef SUBSTRATE_PARSER_FULL
-    pd_system_remark_with_event_V2_t system_remark_with_event_V2;
     pd_timestamp_set_V2_t timestamp_set_V2;
     pd_indices_claim_V2_t indices_claim_V2;
     pd_indices_free_V2_t indices_free_V2;
     pd_indices_force_transfer_V2_t indices_force_transfer_V2;
     pd_indices_freeze_V2_t indices_freeze_V2;
-    pd_balances_transfer_all_V2_t balances_transfer_all_V2;
-    pd_staking_bond_extra_V2_t staking_bond_extra_V2;
-    pd_staking_withdraw_unbonded_V2_t staking_withdraw_unbonded_V2;
-    pd_staking_set_payee_V2_t staking_set_payee_V2;
-    pd_staking_set_controller_V2_t staking_set_controller_V2;
     pd_staking_set_validator_count_V2_t staking_set_validator_count_V2;
     pd_staking_increase_validator_count_V2_t staking_increase_validator_count_V2;
     pd_staking_force_no_eras_V2_t staking_force_no_eras_V2;
     pd_staking_force_new_era_V2_t staking_force_new_era_V2;
-    pd_staking_set_invulnerables_V2_t staking_set_invulnerables_V2;
     pd_staking_force_unstake_V2_t staking_force_unstake_V2;
     pd_staking_force_new_era_always_V2_t staking_force_new_era_always_V2;
     pd_staking_cancel_deferred_slash_V2_t staking_cancel_deferred_slash_V2;
-    pd_staking_payout_stakers_V2_t staking_payout_stakers_V2;
     pd_staking_set_history_depth_V2_t staking_set_history_depth_V2;
     pd_staking_reap_stash_V2_t staking_reap_stash_V2;
     pd_staking_chill_other_V2_t staking_chill_other_V2;
-    pd_session_set_keys_V2_t session_set_keys_V2;
-    pd_session_purge_keys_V2_t session_purge_keys_V2;
     pd_council_set_members_V2_t council_set_members_V2;
     pd_council_execute_V2_t council_execute_V2;
     pd_council_propose_V2_t council_propose_V2;
@@ -725,7 +722,6 @@ typedef union {
     pd_bounties_close_bounty_V2_t bounties_close_bounty_V2;
     pd_bounties_extend_bounty_expiry_V2_t bounties_extend_bounty_expiry_V2;
     pd_ormlvesting_claim_V2_t ormlvesting_claim_V2;
-    pd_ormlvesting_claim_for_V2_t ormlvesting_claim_for_V2;
     pd_pdexmigration_set_migration_operational_status_V2_t pdexmigration_set_migration_operational_status_V2;
     pd_pdexmigration_set_relayer_status_V2_t pdexmigration_set_relayer_status_V2;
     pd_pdexmigration_mint_V2_t pdexmigration_mint_V2;
@@ -739,6 +735,19 @@ typedef struct {
     pd_LookupSource_V2_t dest;
     pd_CompactBalance_t value;
 } pd_balances_transfer_V2_t;
+
+#define PD_CALL_BALANCES_FORCE_TRANSFER_V2 2
+typedef struct {
+    pd_LookupSource_V2_t source;
+    pd_LookupSource_V2_t dest;
+    pd_CompactBalance_t value;
+} pd_balances_force_transfer_V2_t;
+
+#define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V2 3
+typedef struct {
+    pd_LookupSource_V2_t dest;
+    pd_CompactBalance_t value;
+} pd_balances_transfer_keep_alive_V2_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #define PD_CALL_SYSTEM_FILL_BLOCK_V2 0
@@ -766,25 +775,17 @@ typedef struct {
     pd_Bytes_t code;
 } pd_system_set_code_without_checks_V2_t;
 
+#define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V2 9
+typedef struct {
+    pd_Bytes_t remark;
+} pd_system_remark_with_event_V2_t;
+
 #define PD_CALL_BALANCES_SET_BALANCE_V2 1
 typedef struct {
     pd_LookupSource_V2_t who;
     pd_CompactBalance_t new_free;
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_V2_t;
-
-#define PD_CALL_BALANCES_FORCE_TRANSFER_V2 2
-typedef struct {
-    pd_LookupSource_V2_t source;
-    pd_LookupSource_V2_t dest;
-    pd_CompactBalance_t value;
-} pd_balances_force_transfer_V2_t;
-
-#define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V2 3
-typedef struct {
-    pd_LookupSource_V2_t dest;
-    pd_CompactBalance_t value;
-} pd_balances_transfer_keep_alive_V2_t;
 
 #define PD_CALL_PROXY_PROXY_V2 0
 typedef struct {
@@ -830,15 +831,16 @@ typedef struct {
 
 typedef union {
     pd_balances_transfer_V2_t balances_transfer_V2;
+    pd_balances_force_transfer_V2_t balances_force_transfer_V2;
+    pd_balances_transfer_keep_alive_V2_t balances_transfer_keep_alive_V2;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_system_fill_block_V2_t system_fill_block_V2;
     pd_system_remark_V2_t system_remark_V2;
     pd_system_set_heap_pages_V2_t system_set_heap_pages_V2;
     pd_system_set_code_V2_t system_set_code_V2;
     pd_system_set_code_without_checks_V2_t system_set_code_without_checks_V2;
+    pd_system_remark_with_event_V2_t system_remark_with_event_V2;
     pd_balances_set_balance_V2_t balances_set_balance_V2;
-    pd_balances_force_transfer_V2_t balances_force_transfer_V2;
-    pd_balances_transfer_keep_alive_V2_t balances_transfer_keep_alive_V2;
     pd_proxy_proxy_V2_t proxy_proxy_V2;
     pd_multisig_as_multi_threshold_1_V2_t multisig_as_multi_threshold_1_V2;
     pd_multisig_as_multi_V2_t multisig_as_multi_V2;

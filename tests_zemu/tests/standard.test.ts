@@ -30,6 +30,9 @@ const defaultOptions = {
   X11: false,
 }
 
+const expected_address = 'esqUXfjDQV1P5jPtqrrL6MvF2KFjJWtk45TmVdAHWRGv9Efim'
+const expected_pk = 'd05081ebecf4f0c61e7e992696fc6c8b537533630c15642599f3c23f8d6db83d'
+
 jest.setTimeout(60000)
 
 beforeAll(async () => {
@@ -89,9 +92,6 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R'
-      const expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
-
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
     } finally {
@@ -117,9 +117,6 @@ describe('Standard', function () {
 
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
-
-      const expected_address = 'JMdbWK5cy3Bm4oCyhWNLQJoC4cczNgJsyk7nLZHMqFT7z7R'
-      const expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -257,7 +254,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_large_nomination`, m.name === 'nanos' ? 8 : 6)
+      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_large_nomination`, m.name === 'nanos' ? 10 : 8)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -298,7 +295,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-set-keys`, m.name === 'nanos' ? 21 : 14)
+      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-set-keys`, m.name === 'nanos' ? 18 : 13)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
