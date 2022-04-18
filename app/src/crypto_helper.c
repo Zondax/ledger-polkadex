@@ -58,13 +58,12 @@ uint8_t crypto_SS58CalculatePrefix(uint16_t addressType, uint8_t *prefixBytes) {
         return 2;
     }
 
-    prefixBytes[0] = addressType & 0x3F;                                      // address type
+    prefixBytes[0] = addressType & 0x3F; // address type
     return 1;
 }
 
 uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
                                 uint16_t addressType, const uint8_t *pubkey) {
-
     // based on https://docs.substrate.io/v3/advanced/ss58/
     if (buffer == NULL || buffer_len < SS58_ADDRESS_MAX_LEN) {
         return 0;
@@ -73,6 +72,7 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
         return 0;
     }
     MEMZERO(buffer, buffer_len);
+
     uint8_t hash[64];
     uint8_t unencoded[36];
 
@@ -81,10 +81,10 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
         return 0;
     }
 
-    memcpy(unencoded + prefixSize, pubkey, 32);                // account id
+    memcpy(unencoded + prefixSize, pubkey, 32);           // account id
     ss58hash((uint8_t *) unencoded, 32 + prefixSize, hash, 64);
-    unencoded[32+prefixSize] = hash[0];
-    unencoded[33+prefixSize] = hash[1];
+    unencoded[32 + prefixSize] = hash[0];
+    unencoded[33 + prefixSize] = hash[1];
 
     size_t outLen = buffer_len;
     encode_base58(unencoded, 34 + prefixSize, buffer, &outLen);
