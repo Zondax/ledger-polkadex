@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -33,6 +33,20 @@ typedef struct {
 typedef struct {
     compactInt_t value;
 } pd_CompactAccountIndex_V2_t;
+
+typedef struct {
+    uint8_t value;
+} pd_Vote_V2_t;
+
+typedef struct {
+    pd_BalanceOf_t aye;
+    pd_BalanceOf_t nay;
+} pd_AccountVoteSplit_V2_t;
+
+typedef struct {
+    pd_Vote_V2_t vote;
+    pd_BalanceOf_t balance;
+} pd_AccountVoteStandard_V2_t;
 
 typedef struct {
     pd_u32_t digest_interval;
@@ -79,6 +93,10 @@ typedef struct {
 } pd_ProxyType_V2_t;
 
 typedef struct {
+    uint32_t value;
+} pd_ReferendumIndex_V2_t;
+
+typedef struct {
     pd_u32_t dependency_id;
     uint8_t weight;
     pd_bool_t is_exclusive;
@@ -98,6 +116,14 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_VestingScheduleOf_V2_t;
+
+typedef struct {
+    uint8_t value;
+    union {
+        pd_AccountVoteStandard_V2_t voteStandard;
+        pd_AccountVoteSplit_V2_t voteSplit;
+    };
+} pd_AccountVote_V2_t;
 
 typedef struct {
     // https://github.com/paritytech/substrate/blob/effe489951d1edab9d34846b1eefdfaf9511dab9/frame/identity/src/lib.rs#L276
@@ -163,11 +189,19 @@ typedef compactInt_t pd_CompactMemberCount_V2_t;
 
 typedef compactInt_t pd_CompactMoment_V2_t;
 
+typedef compactInt_t pd_CompactPropIndex_V2_t;
+
 typedef compactInt_t pd_CompactProposalIndex_V2_t;
+
+typedef compactInt_t pd_CompactReferendumIndex_V2_t;
 
 typedef compactInt_t pd_CompactRegistrarIndex_V2_t;
 
 typedef compactInt_t pd_CompactWeight_V2_t;
+
+typedef struct {
+    uint8_t value;
+} pd_Conviction_V2_t;
 
 typedef struct {
     uint32_t value;
@@ -230,6 +264,11 @@ typedef struct {
     uint8_t some;
     pd_ProxyType_V2_t contained;
 } pd_OptionProxyType_V2_t;
+
+typedef struct {
+    uint8_t some;
+    pd_ReferendumIndex_V2_t contained;
+} pd_OptionReferendumIndex_V2_t;
 
 typedef struct {
     uint32_t value;

@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2021 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 #pragma once
 
 #ifdef __cplusplus
@@ -25,7 +25,6 @@ static const char* STR_MO_UTILITY = "Utility";
 static const char* STR_MO_TIMESTAMP = "Timestamp";
 static const char* STR_MO_INDICES = "Indices";
 static const char* STR_MO_BALANCES = "Balances";
-static const char* STR_MO_ELECTIONPROVIDERMULTIPHASE = "Electionprovidermultiphase";
 static const char* STR_MO_STAKING = "Staking";
 static const char* STR_MO_SESSION = "Session";
 static const char* STR_MO_COUNCIL = "Council";
@@ -40,6 +39,7 @@ static const char* STR_MO_RECOVERY = "Recovery";
 static const char* STR_MO_PROXY = "Proxy";
 static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_BOUNTIES = "Bounties";
+static const char* STR_MO_DEMOCRACY = "Democracy";
 static const char* STR_MO_ORMLVESTING = "Ormlvesting";
 static const char* STR_MO_PDEXMIGRATION = "Pdexmigration";
 
@@ -49,19 +49,10 @@ static const char* STR_ME_REMARK = "Remark";
 static const char* STR_ME_SET_HEAP_PAGES = "Set heap pages";
 static const char* STR_ME_SET_CODE = "Set code";
 static const char* STR_ME_SET_CODE_WITHOUT_CHECKS = "Set code without checks";
-static const char* STR_ME_SET_CHANGES_TRIE_CONFIG = "Set changes trie config";
-static const char* STR_ME_SET_STORAGE = "Set storage";
-static const char* STR_ME_KILL_STORAGE = "Kill storage";
-static const char* STR_ME_KILL_PREFIX = "Kill prefix";
 static const char* STR_ME_REMARK_WITH_EVENT = "Remark with event";
 static const char* STR_ME_BATCH = "Batch";
-static const char* STR_ME_AS_DERIVATIVE = "As derivative";
 static const char* STR_ME_BATCH_ALL = "Batch all";
-static const char* STR_ME_REPORT_EQUIVOCATION = "Report equivocation";
-static const char* STR_ME_REPORT_EQUIVOCATION_UNSIGNED = "Report equivocation unsigned";
-static const char* STR_ME_PLAN_CONFIG_CHANGE = "Plan config change";
 static const char* STR_ME_SET = "Set";
-static const char* STR_ME_SET_UNCLES = "Set uncles";
 static const char* STR_ME_CLAIM = "Claim";
 static const char* STR_ME_TRANSFER = "Transfer";
 static const char* STR_ME_FREE = "Free";
@@ -70,10 +61,6 @@ static const char* STR_ME_FREEZE = "Freeze";
 static const char* STR_ME_SET_BALANCE = "Set balance";
 static const char* STR_ME_TRANSFER_KEEP_ALIVE = "Transfer keep alive";
 static const char* STR_ME_TRANSFER_ALL = "Transfer all";
-static const char* STR_ME_SUBMIT_UNSIGNED = "Submit unsigned";
-static const char* STR_ME_SET_MINIMUM_UNTRUSTED_SCORE = "Set minimum untrusted score";
-static const char* STR_ME_SET_EMERGENCY_ELECTION_RESULT = "Set emergency election result";
-static const char* STR_ME_SUBMIT = "Submit";
 static const char* STR_ME_BOND = "Bond";
 static const char* STR_ME_BOND_EXTRA = "Bond extra";
 static const char* STR_ME_UNBOND = "Unbond";
@@ -85,7 +72,6 @@ static const char* STR_ME_SET_PAYEE = "Set payee";
 static const char* STR_ME_SET_CONTROLLER = "Set controller";
 static const char* STR_ME_SET_VALIDATOR_COUNT = "Set validator count";
 static const char* STR_ME_INCREASE_VALIDATOR_COUNT = "Increase validator count";
-static const char* STR_ME_SCALE_VALIDATOR_COUNT = "Scale validator count";
 static const char* STR_ME_FORCE_NO_ERAS = "Force no eras";
 static const char* STR_ME_FORCE_NEW_ERA = "Force new era";
 static const char* STR_ME_SET_INVULNERABLES = "Set invulnerables";
@@ -97,7 +83,6 @@ static const char* STR_ME_REBOND = "Rebond";
 static const char* STR_ME_SET_HISTORY_DEPTH = "Set history depth";
 static const char* STR_ME_REAP_STASH = "Reap stash";
 static const char* STR_ME_KICK = "Kick";
-static const char* STR_ME_SET_STAKING_LIMITS = "Set staking limits";
 static const char* STR_ME_CHILL_OTHER = "Chill other";
 static const char* STR_ME_SET_KEYS = "Set keys";
 static const char* STR_ME_PURGE_KEYS = "Purge keys";
@@ -109,7 +94,6 @@ static const char* STR_ME_CLOSE = "Close";
 static const char* STR_ME_DISAPPROVE_PROPOSAL = "Disapprove proposal";
 static const char* STR_ME_REMOVE_VOTER = "Remove voter";
 static const char* STR_ME_SUBMIT_CANDIDACY = "Submit candidacy";
-static const char* STR_ME_RENOUNCE_CANDIDACY = "Renounce candidacy";
 static const char* STR_ME_REMOVE_MEMBER = "Remove member";
 static const char* STR_ME_CLEAN_DEFUNCT_VOTERS = "Clean defunct voters";
 static const char* STR_ME_ADD_MEMBER = "Add member";
@@ -126,37 +110,22 @@ static const char* STR_ME_SUDO = "Sudo";
 static const char* STR_ME_SUDO_UNCHECKED_WEIGHT = "Sudo unchecked weight";
 static const char* STR_ME_SET_KEY = "Set key";
 static const char* STR_ME_SUDO_AS = "Sudo as";
-static const char* STR_ME_HEARTBEAT = "Heartbeat";
 static const char* STR_ME_ADD_REGISTRAR = "Add registrar";
-static const char* STR_ME_SET_IDENTITY = "Set identity";
-static const char* STR_ME_SET_SUBS = "Set subs";
 static const char* STR_ME_CLEAR_IDENTITY = "Clear identity";
 static const char* STR_ME_REQUEST_JUDGEMENT = "Request judgement";
 static const char* STR_ME_CANCEL_REQUEST = "Cancel request";
 static const char* STR_ME_SET_FEE = "Set fee";
 static const char* STR_ME_SET_ACCOUNT_ID = "Set account id";
-static const char* STR_ME_SET_FIELDS = "Set fields";
-static const char* STR_ME_PROVIDE_JUDGEMENT = "Provide judgement";
 static const char* STR_ME_KILL_IDENTITY = "Kill identity";
-static const char* STR_ME_ADD_SUB = "Add sub";
-static const char* STR_ME_RENAME_SUB = "Rename sub";
 static const char* STR_ME_REMOVE_SUB = "Remove sub";
 static const char* STR_ME_QUIT_SUB = "Quit sub";
-static const char* STR_ME_AS_RECOVERED = "As recovered";
 static const char* STR_ME_SET_RECOVERED = "Set recovered";
-static const char* STR_ME_CREATE_RECOVERY = "Create recovery";
 static const char* STR_ME_INITIATE_RECOVERY = "Initiate recovery";
 static const char* STR_ME_VOUCH_RECOVERY = "Vouch recovery";
 static const char* STR_ME_CLAIM_RECOVERY = "Claim recovery";
 static const char* STR_ME_CLOSE_RECOVERY = "Close recovery";
 static const char* STR_ME_REMOVE_RECOVERY = "Remove recovery";
 static const char* STR_ME_CANCEL_RECOVERED = "Cancel recovered";
-static const char* STR_ME_SCHEDULE = "Schedule";
-static const char* STR_ME_CANCEL = "Cancel";
-static const char* STR_ME_SCHEDULE_NAMED = "Schedule named";
-static const char* STR_ME_CANCEL_NAMED = "Cancel named";
-static const char* STR_ME_SCHEDULE_AFTER = "Schedule after";
-static const char* STR_ME_SCHEDULE_NAMED_AFTER = "Schedule named after";
 static const char* STR_ME_PROXY = "Proxy";
 static const char* STR_ME_ADD_PROXY = "Add proxy";
 static const char* STR_ME_REMOVE_PROXY = "Remove proxy";
@@ -180,13 +149,31 @@ static const char* STR_ME_AWARD_BOUNTY = "Award bounty";
 static const char* STR_ME_CLAIM_BOUNTY = "Claim bounty";
 static const char* STR_ME_CLOSE_BOUNTY = "Close bounty";
 static const char* STR_ME_EXTEND_BOUNTY_EXPIRY = "Extend bounty expiry";
-static const char* STR_ME_VESTED_TRANSFER = "Vested transfer";
-static const char* STR_ME_UPDATE_VESTING_SCHEDULES = "Update vesting schedules";
-static const char* STR_ME_CLAIM_FOR = "Claim for";
+static const char* STR_ME_SECOND = "Second";
+static const char* STR_ME_EMERGENCY_CANCEL = "Emergency cancel";
+static const char* STR_ME_EXTERNAL_PROPOSE = "External propose";
+static const char* STR_ME_EXTERNAL_PROPOSE_MAJORITY = "External propose majority";
+static const char* STR_ME_EXTERNAL_PROPOSE_DEFAULT = "External propose default";
+static const char* STR_ME_FAST_TRACK = "Fast track";
+static const char* STR_ME_VETO_EXTERNAL = "Veto external";
+static const char* STR_ME_CANCEL_REFERENDUM = "Cancel referendum";
+static const char* STR_ME_CANCEL_QUEUED = "Cancel queued";
+static const char* STR_ME_DELEGATE = "Delegate";
+static const char* STR_ME_UNDELEGATE = "Undelegate";
+static const char* STR_ME_CLEAR_PUBLIC_PROPOSALS = "Clear public proposals";
+static const char* STR_ME_NOTE_PREIMAGE = "Note preimage";
+static const char* STR_ME_NOTE_PREIMAGE_OPERATIONAL = "Note preimage operational";
+static const char* STR_ME_NOTE_IMMINENT_PREIMAGE = "Note imminent preimage";
+static const char* STR_ME_NOTE_IMMINENT_PREIMAGE_OPERATIONAL = "Note imminent preimage operational";
+static const char* STR_ME_REAP_PREIMAGE = "Reap preimage";
+static const char* STR_ME_UNLOCK = "Unlock";
+static const char* STR_ME_REMOVE_VOTE = "Remove vote";
+static const char* STR_ME_REMOVE_OTHER_VOTE = "Remove other vote";
+static const char* STR_ME_ENACT_PROPOSAL = "Enact proposal";
+static const char* STR_ME_CANCEL_PROPOSAL = "Cancel proposal";
 static const char* STR_ME_SET_MIGRATION_OPERATIONAL_STATUS = "Set migration operational status";
 static const char* STR_ME_SET_RELAYER_STATUS = "Set relayer status";
 static const char* STR_ME_MINT = "Mint";
-static const char* STR_ME_UNLOCK = "Unlock";
 static const char* STR_ME_REMOVE_MINTED_TOKENS = "Remove minted tokens";
 
 // Items names
@@ -207,19 +194,14 @@ static const char* STR_IT_now = "Now";
 static const char* STR_IT_new_ = "New";
 static const char* STR_IT_freeze = "Freeze";
 static const char* STR_IT_dest = "Dest";
+static const char* STR_IT_amount = "Amount";
 static const char* STR_IT_who = "Who";
 static const char* STR_IT_new_free = "New free";
 static const char* STR_IT_new_reserved = "New reserved";
 static const char* STR_IT_source = "Source";
 static const char* STR_IT_keep_alive = "Keep alive";
-static const char* STR_IT_raw_solution = "Raw solution";
-static const char* STR_IT_witness = "Witness";
-static const char* STR_IT_maybe_next_score = "Maybe next score";
-static const char* STR_IT_supports = "Supports";
-static const char* STR_IT_num_signed_submissions = "Num signed submissions";
 static const char* STR_IT_controller = "Controller";
 static const char* STR_IT_payee = "Payee";
-static const char* STR_IT_max_additional = "Max additional";
 static const char* STR_IT_num_slashing_spans = "Num slashing spans";
 static const char* STR_IT_prefs = "Prefs";
 static const char* STR_IT_targets = "Targets";
@@ -293,13 +275,23 @@ static const char* STR_IT_timepoint = "Timepoint";
 static const char* STR_IT_description = "Description";
 static const char* STR_IT_bounty_id = "Bounty id";
 static const char* STR_IT_curator = "Curator";
+static const char* STR_IT_seconds_upper_bound = "Seconds upper bound";
+static const char* STR_IT_ref_index = "Ref index";
+static const char* STR_IT_vote = "Vote";
+static const char* STR_IT_voting_period = "Voting period";
+static const char* STR_IT_which = "Which";
+static const char* STR_IT_to = "To";
+static const char* STR_IT_conviction = "Conviction";
+static const char* STR_IT_balance = "Balance";
+static const char* STR_IT_encoded_proposal = "Encoded proposal";
+static const char* STR_IT_proposal_len_upper_bound = "Proposal len upper bound";
+static const char* STR_IT_maybe_ref_index = "Maybe ref index";
+static const char* STR_IT_prop_index = "Prop index";
 static const char* STR_IT_schedule = "Schedule";
 static const char* STR_IT_vesting_schedules = "Vesting schedules";
 static const char* STR_IT_status = "Status";
 static const char* STR_IT_relayer = "Relayer";
-static const char* STR_IT_amount = "Amount";
 static const char* STR_IT_eth_tx = "Eth tx";
-static const char* STR_IT_value = "Amount";
 
 #ifdef __cplusplus
 }
