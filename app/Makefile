@@ -1,7 +1,7 @@
 #*******************************************************************************
-#   Ledger App
-#   (c) 2018 - 2022 Zondax GmbH
-#   (c) 2017 Ledger
+#  Ledger App
+#  (c) 2019 - 2022 Zondax GmbH
+#  (c) 2017 Ledger
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -72,17 +72,17 @@ $(info COIN  = [$(COIN)])
 ifeq ($(COIN),PDEX)
 # Main app configuration
 DEFINES += APP_STANDARD
-ifeq ($(TARGET_NAME),TARGET_NANOX)
+ifneq ($(TARGET_NAME),TARGET_NANOS)
 DEFINES += SUBSTRATE_PARSER_FULL
 endif
 APPNAME = "Polkadex"
-APPPATH = "44'/799'"
+APPPATH = "44'/799'"  --path "44'/354'"
 
 else ifeq ($(COIN),PDEX_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "Polkadex XL"
-APPPATH = "44'/799'"
+APPPATH = "44'/799'"  --path "44'/354'"
 
 else
 define error_message
@@ -239,11 +239,11 @@ clean: rust_clean
 # load, delete and listvariants are provided to comply with Ledger requirements
 .PHONY: load
 load:
-	python -m ledgerblue.loadApp $(APP_LOAD_PARAMS)
+	python3 -m ledgerblue.loadApp $(APP_LOAD_PARAMS)
 
 .PHONY: delete
 delete:
-	python -m ledgerblue.deleteApp $(COMMON_DELETE_PARAMS)
+	python3 -m ledgerblue.deleteApp $(COMMON_DELETE_PARAMS)
 
 # Import generic rules from the SDK
 include $(BOLOS_SDK)/Makefile.rules

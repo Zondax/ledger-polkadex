@@ -1,18 +1,18 @@
 /*******************************************************************************
-*  (c) 2019 Zondax GmbH
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *  (c) 2019 - 2022 Zondax GmbH
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 
 #include "substrate_dispatch_V2.h"
 #include "substrate_strings.h"
@@ -37,7 +37,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_V2(
     parser_context_t* c, pd_balances_transfer_V2_t* m)
 {
     CHECK_ERROR(_readLookupSource_V2(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->value))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -46,7 +46,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V2(
 {
     CHECK_ERROR(_readLookupSource_V2(c, &m->source))
     CHECK_ERROR(_readLookupSource_V2(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->value))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -54,7 +54,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V2(
     parser_context_t* c, pd_balances_transfer_keep_alive_V2_t* m)
 {
     CHECK_ERROR(_readLookupSource_V2(c, &m->dest))
-    CHECK_ERROR(_readCompactBalance(c, &m->value))
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
 
@@ -70,7 +70,7 @@ __Z_INLINE parser_error_t _readMethod_staking_bond_V2(
     parser_context_t* c, pd_staking_bond_V2_t* m)
 {
     CHECK_ERROR(_readLookupSource_V2(c, &m->controller))
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     CHECK_ERROR(_readRewardDestination_V2(c, &m->payee))
     return parser_ok;
 }
@@ -78,14 +78,14 @@ __Z_INLINE parser_error_t _readMethod_staking_bond_V2(
 __Z_INLINE parser_error_t _readMethod_staking_bond_extra_V2(
     parser_context_t* c, pd_staking_bond_extra_V2_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->max_additional))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_unbond_V2(
     parser_context_t* c, pd_staking_unbond_V2_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     return parser_ok;
 }
 
@@ -141,7 +141,7 @@ __Z_INLINE parser_error_t _readMethod_staking_payout_stakers_V2(
 __Z_INLINE parser_error_t _readMethod_staking_rebond_V2(
     parser_context_t* c, pd_staking_rebond_V2_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     return parser_ok;
 }
 
@@ -216,6 +216,14 @@ __Z_INLINE parser_error_t _readMethod_indices_claim_V2(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_indices_transfer_V2(
+    parser_context_t* c, pd_indices_transfer_V2_t* m)
+{
+    CHECK_ERROR(_readAccountId_V2(c, &m->new_))
+    CHECK_ERROR(_readAccountIndex_V2(c, &m->index))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_indices_free_V2(
     parser_context_t* c, pd_indices_free_V2_t* m)
 {
@@ -274,6 +282,13 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V2(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_staking_set_invulnerables_V2(
+    parser_context_t* c, pd_staking_set_invulnerables_V2_t* m)
+{
+    CHECK_ERROR(_readVecAccountId_V2(c, &m->invulnerables))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V2(
     parser_context_t* c, pd_staking_force_unstake_V2_t* m)
 {
@@ -309,6 +324,13 @@ __Z_INLINE parser_error_t _readMethod_staking_reap_stash_V2(
 {
     CHECK_ERROR(_readAccountId_V2(c, &m->stash))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_staking_kick_V2(
+    parser_context_t* c, pd_staking_kick_V2_t* m)
+{
+    CHECK_ERROR(_readVecLookupSource_V2(c, &m->who))
     return parser_ok;
 }
 
@@ -427,7 +449,7 @@ __Z_INLINE parser_error_t _readMethod_elections_vote_V2(
     parser_context_t* c, pd_elections_vote_V2_t* m)
 {
     CHECK_ERROR(_readVecAccountId_V2(c, &m->votes))
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     return parser_ok;
 }
 
@@ -520,7 +542,7 @@ __Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V2(
 __Z_INLINE parser_error_t _readMethod_treasury_propose_spend_V2(
     parser_context_t* c, pd_treasury_propose_spend_V2_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     CHECK_ERROR(_readLookupSource_V2(c, &m->beneficiary))
     return parser_ok;
 }
@@ -814,7 +836,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi_V2(
 __Z_INLINE parser_error_t _readMethod_bounties_propose_bounty_V2(
     parser_context_t* c, pd_bounties_propose_bounty_V2_t* m)
 {
-    CHECK_ERROR(_readCompactBalanceOf(c, &m->value))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
     CHECK_ERROR(_readBytes(c, &m->description))
     return parser_ok;
 }
@@ -876,6 +898,182 @@ __Z_INLINE parser_error_t _readMethod_bounties_extend_bounty_expiry_V2(
 {
     CHECK_ERROR(_readCompactBountyIndex_V2(c, &m->bounty_id))
     CHECK_ERROR(_readBytes(c, &m->_remark))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_propose_V2(
+    parser_context_t* c, pd_democracy_propose_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    CHECK_ERROR(_readCompactBalanceOf(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_second_V2(
+    parser_context_t* c, pd_democracy_second_V2_t* m)
+{
+    CHECK_ERROR(_readCompactPropIndex_V2(c, &m->proposal))
+    CHECK_ERROR(_readCompactu32(c, &m->seconds_upper_bound))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_vote_V2(
+    parser_context_t* c, pd_democracy_vote_V2_t* m)
+{
+    CHECK_ERROR(_readCompactReferendumIndex_V2(c, &m->ref_index))
+    CHECK_ERROR(_readAccountVote_V2(c, &m->vote))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_emergency_cancel_V2(
+    parser_context_t* c, pd_democracy_emergency_cancel_V2_t* m)
+{
+    CHECK_ERROR(_readReferendumIndex_V2(c, &m->ref_index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_external_propose_V2(
+    parser_context_t* c, pd_democracy_external_propose_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_external_propose_majority_V2(
+    parser_context_t* c, pd_democracy_external_propose_majority_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_external_propose_default_V2(
+    parser_context_t* c, pd_democracy_external_propose_default_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_fast_track_V2(
+    parser_context_t* c, pd_democracy_fast_track_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    CHECK_ERROR(_readBlockNumber(c, &m->voting_period))
+    CHECK_ERROR(_readBlockNumber(c, &m->delay))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_veto_external_V2(
+    parser_context_t* c, pd_democracy_veto_external_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_cancel_referendum_V2(
+    parser_context_t* c, pd_democracy_cancel_referendum_V2_t* m)
+{
+    CHECK_ERROR(_readCompactReferendumIndex_V2(c, &m->ref_index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_cancel_queued_V2(
+    parser_context_t* c, pd_democracy_cancel_queued_V2_t* m)
+{
+    CHECK_ERROR(_readReferendumIndex_V2(c, &m->which))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_delegate_V2(
+    parser_context_t* c, pd_democracy_delegate_V2_t* m)
+{
+    CHECK_ERROR(_readAccountId_V2(c, &m->to))
+    CHECK_ERROR(_readConviction_V2(c, &m->conviction))
+    CHECK_ERROR(_readBalanceOf(c, &m->balance))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_undelegate_V2(
+    parser_context_t* c, pd_democracy_undelegate_V2_t* m)
+{
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_clear_public_proposals_V2(
+    parser_context_t* c, pd_democracy_clear_public_proposals_V2_t* m)
+{
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_note_preimage_V2(
+    parser_context_t* c, pd_democracy_note_preimage_V2_t* m)
+{
+    CHECK_ERROR(_readBytes(c, &m->encoded_proposal))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_note_preimage_operational_V2(
+    parser_context_t* c, pd_democracy_note_preimage_operational_V2_t* m)
+{
+    CHECK_ERROR(_readBytes(c, &m->encoded_proposal))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_note_imminent_preimage_V2(
+    parser_context_t* c, pd_democracy_note_imminent_preimage_V2_t* m)
+{
+    CHECK_ERROR(_readBytes(c, &m->encoded_proposal))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_note_imminent_preimage_operational_V2(
+    parser_context_t* c, pd_democracy_note_imminent_preimage_operational_V2_t* m)
+{
+    CHECK_ERROR(_readBytes(c, &m->encoded_proposal))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_reap_preimage_V2(
+    parser_context_t* c, pd_democracy_reap_preimage_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    CHECK_ERROR(_readCompactu32(c, &m->proposal_len_upper_bound))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_unlock_V2(
+    parser_context_t* c, pd_democracy_unlock_V2_t* m)
+{
+    CHECK_ERROR(_readAccountId_V2(c, &m->target))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_remove_vote_V2(
+    parser_context_t* c, pd_democracy_remove_vote_V2_t* m)
+{
+    CHECK_ERROR(_readReferendumIndex_V2(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_remove_other_vote_V2(
+    parser_context_t* c, pd_democracy_remove_other_vote_V2_t* m)
+{
+    CHECK_ERROR(_readAccountId_V2(c, &m->target))
+    CHECK_ERROR(_readReferendumIndex_V2(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_enact_proposal_V2(
+    parser_context_t* c, pd_democracy_enact_proposal_V2_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    CHECK_ERROR(_readReferendumIndex_V2(c, &m->index))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_democracy_cancel_proposal_V2(
+    parser_context_t* c, pd_democracy_cancel_proposal_V2_t* m)
+{
+    CHECK_ERROR(_readCompactPropIndex_V2(c, &m->prop_index))
     return parser_ok;
 }
 
@@ -1017,6 +1215,9 @@ parser_error_t _readMethod_V2(
     case 1280: /* module 5 call 0 */
         CHECK_ERROR(_readMethod_indices_claim_V2(c, &method->basic.indices_claim_V2))
         break;
+    case 1281: /* module 5 call 1 */
+        CHECK_ERROR(_readMethod_indices_transfer_V2(c, &method->basic.indices_transfer_V2))
+        break;
     case 1282: /* module 5 call 2 */
         CHECK_ERROR(_readMethod_indices_free_V2(c, &method->basic.indices_free_V2))
         break;
@@ -1041,6 +1242,9 @@ parser_error_t _readMethod_V2(
     case 2317: /* module 9 call 13 */
         CHECK_ERROR(_readMethod_staking_force_new_era_V2(c, &method->basic.staking_force_new_era_V2))
         break;
+    case 2318: /* module 9 call 14 */
+        CHECK_ERROR(_readMethod_staking_set_invulnerables_V2(c, &method->basic.staking_set_invulnerables_V2))
+        break;
     case 2319: /* module 9 call 15 */
         CHECK_ERROR(_readMethod_staking_force_unstake_V2(c, &method->basic.staking_force_unstake_V2))
         break;
@@ -1055,6 +1259,9 @@ parser_error_t _readMethod_V2(
         break;
     case 2325: /* module 9 call 21 */
         CHECK_ERROR(_readMethod_staking_reap_stash_V2(c, &method->basic.staking_reap_stash_V2))
+        break;
+    case 2326: /* module 9 call 22 */
+        CHECK_ERROR(_readMethod_staking_kick_V2(c, &method->basic.staking_kick_V2))
         break;
     case 2328: /* module 9 call 24 */
         CHECK_ERROR(_readMethod_staking_chill_other_V2(c, &method->basic.staking_chill_other_V2))
@@ -1272,6 +1479,78 @@ parser_error_t _readMethod_V2(
     case 6920: /* module 27 call 8 */
         CHECK_ERROR(_readMethod_bounties_extend_bounty_expiry_V2(c, &method->basic.bounties_extend_bounty_expiry_V2))
         break;
+    case 7680: /* module 30 call 0 */
+        CHECK_ERROR(_readMethod_democracy_propose_V2(c, &method->basic.democracy_propose_V2))
+        break;
+    case 7681: /* module 30 call 1 */
+        CHECK_ERROR(_readMethod_democracy_second_V2(c, &method->basic.democracy_second_V2))
+        break;
+    case 7682: /* module 30 call 2 */
+        CHECK_ERROR(_readMethod_democracy_vote_V2(c, &method->basic.democracy_vote_V2))
+        break;
+    case 7683: /* module 30 call 3 */
+        CHECK_ERROR(_readMethod_democracy_emergency_cancel_V2(c, &method->basic.democracy_emergency_cancel_V2))
+        break;
+    case 7684: /* module 30 call 4 */
+        CHECK_ERROR(_readMethod_democracy_external_propose_V2(c, &method->basic.democracy_external_propose_V2))
+        break;
+    case 7685: /* module 30 call 5 */
+        CHECK_ERROR(_readMethod_democracy_external_propose_majority_V2(c, &method->basic.democracy_external_propose_majority_V2))
+        break;
+    case 7686: /* module 30 call 6 */
+        CHECK_ERROR(_readMethod_democracy_external_propose_default_V2(c, &method->basic.democracy_external_propose_default_V2))
+        break;
+    case 7687: /* module 30 call 7 */
+        CHECK_ERROR(_readMethod_democracy_fast_track_V2(c, &method->basic.democracy_fast_track_V2))
+        break;
+    case 7688: /* module 30 call 8 */
+        CHECK_ERROR(_readMethod_democracy_veto_external_V2(c, &method->basic.democracy_veto_external_V2))
+        break;
+    case 7689: /* module 30 call 9 */
+        CHECK_ERROR(_readMethod_democracy_cancel_referendum_V2(c, &method->basic.democracy_cancel_referendum_V2))
+        break;
+    case 7690: /* module 30 call 10 */
+        CHECK_ERROR(_readMethod_democracy_cancel_queued_V2(c, &method->basic.democracy_cancel_queued_V2))
+        break;
+    case 7691: /* module 30 call 11 */
+        CHECK_ERROR(_readMethod_democracy_delegate_V2(c, &method->basic.democracy_delegate_V2))
+        break;
+    case 7692: /* module 30 call 12 */
+        CHECK_ERROR(_readMethod_democracy_undelegate_V2(c, &method->basic.democracy_undelegate_V2))
+        break;
+    case 7693: /* module 30 call 13 */
+        CHECK_ERROR(_readMethod_democracy_clear_public_proposals_V2(c, &method->basic.democracy_clear_public_proposals_V2))
+        break;
+    case 7694: /* module 30 call 14 */
+        CHECK_ERROR(_readMethod_democracy_note_preimage_V2(c, &method->basic.democracy_note_preimage_V2))
+        break;
+    case 7695: /* module 30 call 15 */
+        CHECK_ERROR(_readMethod_democracy_note_preimage_operational_V2(c, &method->basic.democracy_note_preimage_operational_V2))
+        break;
+    case 7696: /* module 30 call 16 */
+        CHECK_ERROR(_readMethod_democracy_note_imminent_preimage_V2(c, &method->basic.democracy_note_imminent_preimage_V2))
+        break;
+    case 7697: /* module 30 call 17 */
+        CHECK_ERROR(_readMethod_democracy_note_imminent_preimage_operational_V2(c, &method->basic.democracy_note_imminent_preimage_operational_V2))
+        break;
+    case 7698: /* module 30 call 18 */
+        CHECK_ERROR(_readMethod_democracy_reap_preimage_V2(c, &method->basic.democracy_reap_preimage_V2))
+        break;
+    case 7699: /* module 30 call 19 */
+        CHECK_ERROR(_readMethod_democracy_unlock_V2(c, &method->basic.democracy_unlock_V2))
+        break;
+    case 7700: /* module 30 call 20 */
+        CHECK_ERROR(_readMethod_democracy_remove_vote_V2(c, &method->basic.democracy_remove_vote_V2))
+        break;
+    case 7701: /* module 30 call 21 */
+        CHECK_ERROR(_readMethod_democracy_remove_other_vote_V2(c, &method->basic.democracy_remove_other_vote_V2))
+        break;
+    case 7702: /* module 30 call 22 */
+        CHECK_ERROR(_readMethod_democracy_enact_proposal_V2(c, &method->basic.democracy_enact_proposal_V2))
+        break;
+    case 7704: /* module 30 call 24 */
+        CHECK_ERROR(_readMethod_democracy_cancel_proposal_V2(c, &method->basic.democracy_cancel_proposal_V2))
+        break;
     case 7168: /* module 28 call 0 */
         CHECK_ERROR(_readMethod_ormlvesting_claim_V2(c, &method->basic.ormlvesting_claim_V2))
         break;
@@ -1292,7 +1571,7 @@ parser_error_t _readMethod_V2(
         break;
 #endif
     default:
-        return parser_not_supported;
+        return parser_unexpected_callIndex;
     }
 
     return parser_ok;
@@ -1345,6 +1624,8 @@ const char* _getMethod_ModuleName_V2(uint8_t moduleIdx)
         return STR_MO_MULTISIG;
     case 27:
         return STR_MO_BOUNTIES;
+    case 30:
+        return STR_MO_DEMOCRACY;
     case 28:
         return STR_MO_ORMLVESTING;
     case 29:
@@ -1411,28 +1692,10 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_CODE;
     case 4: /* module 0 call 4 */
         return STR_ME_SET_CODE_WITHOUT_CHECKS;
-    case 5: /* module 0 call 5 */
-        return STR_ME_SET_CHANGES_TRIE_CONFIG;
-    case 6: /* module 0 call 6 */
-        return STR_ME_SET_STORAGE;
-    case 7: /* module 0 call 7 */
-        return STR_ME_KILL_STORAGE;
-    case 8: /* module 0 call 8 */
-        return STR_ME_KILL_PREFIX;
     case 9: /* module 0 call 9 */
         return STR_ME_REMARK_WITH_EVENT;
-    case 257: /* module 1 call 1 */
-        return STR_ME_AS_DERIVATIVE;
-    case 512: /* module 2 call 0 */
-        return STR_ME_REPORT_EQUIVOCATION;
-    case 513: /* module 2 call 1 */
-        return STR_ME_REPORT_EQUIVOCATION_UNSIGNED;
-    case 514: /* module 2 call 2 */
-        return STR_ME_PLAN_CONFIG_CHANGE;
     case 768: /* module 3 call 0 */
         return STR_ME_SET;
-    case 1024: /* module 4 call 0 */
-        return STR_ME_SET_UNCLES;
     case 1280: /* module 5 call 0 */
         return STR_ME_CLAIM;
     case 1281: /* module 5 call 1 */
@@ -1445,20 +1708,10 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_FREEZE;
     case 1537: /* module 6 call 1 */
         return STR_ME_SET_BALANCE;
-    case 2048: /* module 8 call 0 */
-        return STR_ME_SUBMIT_UNSIGNED;
-    case 2049: /* module 8 call 1 */
-        return STR_ME_SET_MINIMUM_UNTRUSTED_SCORE;
-    case 2050: /* module 8 call 2 */
-        return STR_ME_SET_EMERGENCY_ELECTION_RESULT;
-    case 2051: /* module 8 call 3 */
-        return STR_ME_SUBMIT;
     case 2313: /* module 9 call 9 */
         return STR_ME_SET_VALIDATOR_COUNT;
     case 2314: /* module 9 call 10 */
         return STR_ME_INCREASE_VALIDATOR_COUNT;
-    case 2315: /* module 9 call 11 */
-        return STR_ME_SCALE_VALIDATOR_COUNT;
     case 2316: /* module 9 call 12 */
         return STR_ME_FORCE_NO_ERAS;
     case 2317: /* module 9 call 13 */
@@ -1477,8 +1730,6 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_REAP_STASH;
     case 2326: /* module 9 call 22 */
         return STR_ME_KICK;
-    case 2327: /* module 9 call 23 */
-        return STR_ME_SET_STAKING_LIMITS;
     case 2328: /* module 9 call 24 */
         return STR_ME_CHILL_OTHER;
     case 2816: /* module 11 call 0 */
@@ -1511,8 +1762,6 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_REMOVE_VOTER;
     case 3330: /* module 13 call 2 */
         return STR_ME_SUBMIT_CANDIDACY;
-    case 3331: /* module 13 call 3 */
-        return STR_ME_RENOUNCE_CANDIDACY;
     case 3332: /* module 13 call 4 */
         return STR_ME_REMOVE_MEMBER;
     case 3333: /* module 13 call 5 */
@@ -1531,10 +1780,6 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_PRIME;
     case 3590: /* module 14 call 6 */
         return STR_ME_CLEAR_PRIME;
-    case 3840: /* module 15 call 0 */
-        return STR_ME_REPORT_EQUIVOCATION;
-    case 3841: /* module 15 call 1 */
-        return STR_ME_REPORT_EQUIVOCATION_UNSIGNED;
     case 3842: /* module 15 call 2 */
         return STR_ME_NOTE_STALLED;
     case 4096: /* module 16 call 0 */
@@ -1551,14 +1796,8 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_KEY;
     case 4355: /* module 17 call 3 */
         return STR_ME_SUDO_AS;
-    case 4608: /* module 18 call 0 */
-        return STR_ME_HEARTBEAT;
     case 5632: /* module 22 call 0 */
         return STR_ME_ADD_REGISTRAR;
-    case 5633: /* module 22 call 1 */
-        return STR_ME_SET_IDENTITY;
-    case 5634: /* module 22 call 2 */
-        return STR_ME_SET_SUBS;
     case 5635: /* module 22 call 3 */
         return STR_ME_CLEAR_IDENTITY;
     case 5636: /* module 22 call 4 */
@@ -1569,26 +1808,14 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_FEE;
     case 5639: /* module 22 call 7 */
         return STR_ME_SET_ACCOUNT_ID;
-    case 5640: /* module 22 call 8 */
-        return STR_ME_SET_FIELDS;
-    case 5641: /* module 22 call 9 */
-        return STR_ME_PROVIDE_JUDGEMENT;
     case 5642: /* module 22 call 10 */
         return STR_ME_KILL_IDENTITY;
-    case 5643: /* module 22 call 11 */
-        return STR_ME_ADD_SUB;
-    case 5644: /* module 22 call 12 */
-        return STR_ME_RENAME_SUB;
     case 5645: /* module 22 call 13 */
         return STR_ME_REMOVE_SUB;
     case 5646: /* module 22 call 14 */
         return STR_ME_QUIT_SUB;
-    case 5888: /* module 23 call 0 */
-        return STR_ME_AS_RECOVERED;
     case 5889: /* module 23 call 1 */
         return STR_ME_SET_RECOVERED;
-    case 5890: /* module 23 call 2 */
-        return STR_ME_CREATE_RECOVERY;
     case 5891: /* module 23 call 3 */
         return STR_ME_INITIATE_RECOVERY;
     case 5892: /* module 23 call 4 */
@@ -1601,18 +1828,6 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_REMOVE_RECOVERY;
     case 5896: /* module 23 call 8 */
         return STR_ME_CANCEL_RECOVERED;
-    case 6144: /* module 24 call 0 */
-        return STR_ME_SCHEDULE;
-    case 6145: /* module 24 call 1 */
-        return STR_ME_CANCEL;
-    case 6146: /* module 24 call 2 */
-        return STR_ME_SCHEDULE_NAMED;
-    case 6147: /* module 24 call 3 */
-        return STR_ME_CANCEL_NAMED;
-    case 6148: /* module 24 call 4 */
-        return STR_ME_SCHEDULE_AFTER;
-    case 6149: /* module 24 call 5 */
-        return STR_ME_SCHEDULE_NAMED_AFTER;
     case 6400: /* module 25 call 0 */
         return STR_ME_PROXY;
     case 6401: /* module 25 call 1 */
@@ -1659,14 +1874,56 @@ const char* _getMethod_Name_V2(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_CLOSE_BOUNTY;
     case 6920: /* module 27 call 8 */
         return STR_ME_EXTEND_BOUNTY_EXPIRY;
+    case 7680: /* module 30 call 0 */
+        return STR_ME_PROPOSE;
+    case 7681: /* module 30 call 1 */
+        return STR_ME_SECOND;
+    case 7682: /* module 30 call 2 */
+        return STR_ME_VOTE;
+    case 7683: /* module 30 call 3 */
+        return STR_ME_EMERGENCY_CANCEL;
+    case 7684: /* module 30 call 4 */
+        return STR_ME_EXTERNAL_PROPOSE;
+    case 7685: /* module 30 call 5 */
+        return STR_ME_EXTERNAL_PROPOSE_MAJORITY;
+    case 7686: /* module 30 call 6 */
+        return STR_ME_EXTERNAL_PROPOSE_DEFAULT;
+    case 7687: /* module 30 call 7 */
+        return STR_ME_FAST_TRACK;
+    case 7688: /* module 30 call 8 */
+        return STR_ME_VETO_EXTERNAL;
+    case 7689: /* module 30 call 9 */
+        return STR_ME_CANCEL_REFERENDUM;
+    case 7690: /* module 30 call 10 */
+        return STR_ME_CANCEL_QUEUED;
+    case 7691: /* module 30 call 11 */
+        return STR_ME_DELEGATE;
+    case 7692: /* module 30 call 12 */
+        return STR_ME_UNDELEGATE;
+    case 7693: /* module 30 call 13 */
+        return STR_ME_CLEAR_PUBLIC_PROPOSALS;
+    case 7694: /* module 30 call 14 */
+        return STR_ME_NOTE_PREIMAGE;
+    case 7695: /* module 30 call 15 */
+        return STR_ME_NOTE_PREIMAGE_OPERATIONAL;
+    case 7696: /* module 30 call 16 */
+        return STR_ME_NOTE_IMMINENT_PREIMAGE;
+    case 7697: /* module 30 call 17 */
+        return STR_ME_NOTE_IMMINENT_PREIMAGE_OPERATIONAL;
+    case 7698: /* module 30 call 18 */
+        return STR_ME_REAP_PREIMAGE;
+    case 7699: /* module 30 call 19 */
+        return STR_ME_UNLOCK;
+    case 7700: /* module 30 call 20 */
+        return STR_ME_REMOVE_VOTE;
+    case 7701: /* module 30 call 21 */
+        return STR_ME_REMOVE_OTHER_VOTE;
+    case 7702: /* module 30 call 22 */
+        return STR_ME_ENACT_PROPOSAL;
+    case 7704: /* module 30 call 24 */
+        return STR_ME_CANCEL_PROPOSAL;
     case 7168: /* module 28 call 0 */
         return STR_ME_CLAIM;
-    case 7169: /* module 28 call 1 */
-        return STR_ME_VESTED_TRANSFER;
-    case 7170: /* module 28 call 2 */
-        return STR_ME_UPDATE_VESTING_SCHEDULES;
-    case 7171: /* module 28 call 3 */
-        return STR_ME_CLAIM_FOR;
     case 7424: /* module 29 call 0 */
         return STR_ME_SET_MIGRATION_OPERATIONAL_STATUS;
     case 7425: /* module 29 call 1 */
@@ -1745,6 +2002,8 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 1280: /* module 5 call 0 */
         return 1;
+    case 1281: /* module 5 call 1 */
+        return 2;
     case 1282: /* module 5 call 2 */
         return 1;
     case 1283: /* module 5 call 3 */
@@ -1761,6 +2020,8 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 0;
     case 2317: /* module 9 call 13 */
         return 0;
+    case 2318: /* module 9 call 14 */
+        return 1;
     case 2319: /* module 9 call 15 */
         return 2;
     case 2320: /* module 9 call 16 */
@@ -1771,6 +2032,8 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 2325: /* module 9 call 21 */
         return 2;
+    case 2326: /* module 9 call 22 */
+        return 1;
     case 2328: /* module 9 call 24 */
         return 1;
     case 2816: /* module 11 call 0 */
@@ -1915,6 +2178,54 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 6920: /* module 27 call 8 */
         return 2;
+    case 7680: /* module 30 call 0 */
+        return 2;
+    case 7681: /* module 30 call 1 */
+        return 2;
+    case 7682: /* module 30 call 2 */
+        return 2;
+    case 7683: /* module 30 call 3 */
+        return 1;
+    case 7684: /* module 30 call 4 */
+        return 1;
+    case 7685: /* module 30 call 5 */
+        return 1;
+    case 7686: /* module 30 call 6 */
+        return 1;
+    case 7687: /* module 30 call 7 */
+        return 3;
+    case 7688: /* module 30 call 8 */
+        return 1;
+    case 7689: /* module 30 call 9 */
+        return 1;
+    case 7690: /* module 30 call 10 */
+        return 1;
+    case 7691: /* module 30 call 11 */
+        return 3;
+    case 7692: /* module 30 call 12 */
+        return 0;
+    case 7693: /* module 30 call 13 */
+        return 0;
+    case 7694: /* module 30 call 14 */
+        return 1;
+    case 7695: /* module 30 call 15 */
+        return 1;
+    case 7696: /* module 30 call 16 */
+        return 1;
+    case 7697: /* module 30 call 17 */
+        return 1;
+    case 7698: /* module 30 call 18 */
+        return 2;
+    case 7699: /* module 30 call 19 */
+        return 1;
+    case 7700: /* module 30 call 20 */
+        return 1;
+    case 7701: /* module 30 call 21 */
+        return 2;
+    case 7702: /* module 30 call 22 */
+        return 2;
+    case 7704: /* module 30 call 24 */
+        return 1;
     case 7168: /* module 28 call 0 */
         return 0;
     case 7424: /* module 29 call 0 */
@@ -1959,7 +2270,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_dest;
         case 1:
-            return STR_IT_value;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -1970,7 +2281,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 1:
             return STR_IT_dest;
         case 2:
-            return STR_IT_value;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -1979,7 +2290,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_dest;
         case 1:
-            return STR_IT_value;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -1997,7 +2308,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_controller;
         case 1:
-            return STR_IT_value;
+            return STR_IT_amount;
         case 2:
             return STR_IT_payee;
         default:
@@ -2006,14 +2317,14 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 2305: /* module 9 call 1 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_max_additional;
+            return STR_IT_amount;
         default:
             return NULL;
         }
     case 2306: /* module 9 call 2 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_value;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2069,7 +2380,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 2323: /* module 9 call 19 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_value;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2144,6 +2455,15 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 1281: /* module 5 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_new_;
+        case 1:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
     case 1282: /* module 5 call 2 */
         switch (itemIdx) {
         case 0:
@@ -2204,6 +2524,13 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 2318: /* module 9 call 14 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_invulnerables;
+        default:
+            return NULL;
+        }
     case 2319: /* module 9 call 15 */
         switch (itemIdx) {
         case 0:
@@ -2242,6 +2569,13 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_stash;
         case 1:
             return STR_IT_num_slashing_spans;
+        default:
+            return NULL;
+        }
+    case 2326: /* module 9 call 22 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_who;
         default:
             return NULL;
         }
@@ -2381,7 +2715,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 0:
             return STR_IT_votes;
         case 1:
-            return STR_IT_value;
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -2476,7 +2810,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 4096: /* module 16 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_value;
+            return STR_IT_amount;
         case 1:
             return STR_IT_beneficiary;
         default:
@@ -2805,7 +3139,7 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 6912: /* module 27 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_value;
+            return STR_IT_amount;
         case 1:
             return STR_IT_description;
         default:
@@ -2872,6 +3206,190 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_bounty_id;
         case 1:
             return STR_IT__remark;
+        default:
+            return NULL;
+        }
+    case 7680: /* module 30 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        case 1:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 7681: /* module 30 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal;
+        case 1:
+            return STR_IT_seconds_upper_bound;
+        default:
+            return NULL;
+        }
+    case 7682: /* module 30 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_ref_index;
+        case 1:
+            return STR_IT_vote;
+        default:
+            return NULL;
+        }
+    case 7683: /* module 30 call 3 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_ref_index;
+        default:
+            return NULL;
+        }
+    case 7684: /* module 30 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        default:
+            return NULL;
+        }
+    case 7685: /* module 30 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        default:
+            return NULL;
+        }
+    case 7686: /* module 30 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        default:
+            return NULL;
+        }
+    case 7687: /* module 30 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        case 1:
+            return STR_IT_voting_period;
+        case 2:
+            return STR_IT_delay;
+        default:
+            return NULL;
+        }
+    case 7688: /* module 30 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        default:
+            return NULL;
+        }
+    case 7689: /* module 30 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_ref_index;
+        default:
+            return NULL;
+        }
+    case 7690: /* module 30 call 10 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_which;
+        default:
+            return NULL;
+        }
+    case 7691: /* module 30 call 11 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_to;
+        case 1:
+            return STR_IT_conviction;
+        case 2:
+            return STR_IT_balance;
+        default:
+            return NULL;
+        }
+    case 7692: /* module 30 call 12 */
+        switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 7693: /* module 30 call 13 */
+        switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 7694: /* module 30 call 14 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_encoded_proposal;
+        default:
+            return NULL;
+        }
+    case 7695: /* module 30 call 15 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_encoded_proposal;
+        default:
+            return NULL;
+        }
+    case 7696: /* module 30 call 16 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_encoded_proposal;
+        default:
+            return NULL;
+        }
+    case 7697: /* module 30 call 17 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_encoded_proposal;
+        default:
+            return NULL;
+        }
+    case 7698: /* module 30 call 18 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        case 1:
+            return STR_IT_proposal_len_upper_bound;
+        default:
+            return NULL;
+        }
+    case 7699: /* module 30 call 19 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_target;
+        default:
+            return NULL;
+        }
+    case 7700: /* module 30 call 20 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 7701: /* module 30 call 21 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_target;
+        case 1:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 7702: /* module 30 call 22 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        case 1:
+            return STR_IT_index;
+        default:
+            return NULL;
+        }
+    case 7704: /* module 30 call 24 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_prop_index;
         default:
             return NULL;
         }
@@ -2963,9 +3481,9 @@ parser_error_t _getMethod_ItemValue_V2(
                 &m->nested.balances_transfer_V2.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer_V2 - value */;
+        case 1: /* balances_transfer_V2 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_transfer_V2.value,
+                &m->nested.balances_transfer_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -2983,9 +3501,9 @@ parser_error_t _getMethod_ItemValue_V2(
                 &m->nested.balances_force_transfer_V2.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* balances_force_transfer_V2 - value */;
+        case 2: /* balances_force_transfer_V2 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_force_transfer_V2.value,
+                &m->nested.balances_force_transfer_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -2998,9 +3516,9 @@ parser_error_t _getMethod_ItemValue_V2(
                 &m->nested.balances_transfer_keep_alive_V2.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* balances_transfer_keep_alive_V2 - value */;
+        case 1: /* balances_transfer_keep_alive_V2 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_transfer_keep_alive_V2.value,
+                &m->nested.balances_transfer_keep_alive_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3028,9 +3546,9 @@ parser_error_t _getMethod_ItemValue_V2(
                 &m->basic.staking_bond_V2.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* staking_bond_V2 - value */;
+        case 1: /* staking_bond_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_bond_V2.value,
+                &m->basic.staking_bond_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* staking_bond_V2 - payee */;
@@ -3043,9 +3561,9 @@ parser_error_t _getMethod_ItemValue_V2(
         }
     case 2305: /* module 9 call 1 */
         switch (itemIdx) {
-        case 0: /* staking_bond_extra_V2 - max_additional */;
+        case 0: /* staking_bond_extra_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_bond_extra_V2.max_additional,
+                &m->basic.staking_bond_extra_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3053,9 +3571,9 @@ parser_error_t _getMethod_ItemValue_V2(
         }
     case 2306: /* module 9 call 2 */
         switch (itemIdx) {
-        case 0: /* staking_unbond_V2 - value */;
+        case 0: /* staking_unbond_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_unbond_V2.value,
+                &m->basic.staking_unbond_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3133,9 +3651,9 @@ parser_error_t _getMethod_ItemValue_V2(
         }
     case 2323: /* module 9 call 19 */
         switch (itemIdx) {
-        case 0: /* staking_rebond_V2 - value */;
+        case 0: /* staking_rebond_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.staking_rebond_V2.value,
+                &m->basic.staking_rebond_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3242,6 +3760,21 @@ parser_error_t _getMethod_ItemValue_V2(
         default:
             return parser_no_data;
         }
+    case 1281: /* module 5 call 1 */
+        switch (itemIdx) {
+        case 0: /* indices_transfer_V2 - new_ */;
+            return _toStringAccountId_V2(
+                &m->basic.indices_transfer_V2.new_,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* indices_transfer_V2 - index */;
+            return _toStringAccountIndex_V2(
+                &m->basic.indices_transfer_V2.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 1282: /* module 5 call 2 */
         switch (itemIdx) {
         case 0: /* indices_free_V2 - index */;
@@ -3332,6 +3865,16 @@ parser_error_t _getMethod_ItemValue_V2(
         default:
             return parser_no_data;
         }
+    case 2318: /* module 9 call 14 */
+        switch (itemIdx) {
+        case 0: /* staking_set_invulnerables_V2 - invulnerables */;
+            return _toStringVecAccountId_V2(
+                &m->basic.staking_set_invulnerables_V2.invulnerables,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 2319: /* module 9 call 15 */
         switch (itemIdx) {
         case 0: /* staking_force_unstake_V2 - stash */;
@@ -3392,6 +3935,16 @@ parser_error_t _getMethod_ItemValue_V2(
         case 1: /* staking_reap_stash_V2 - num_slashing_spans */;
             return _toStringu32(
                 &m->basic.staking_reap_stash_V2.num_slashing_spans,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2326: /* module 9 call 22 */
+        switch (itemIdx) {
+        case 0: /* staking_kick_V2 - who */;
+            return _toStringVecLookupSource_V2(
+                &m->basic.staking_kick_V2.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3634,9 +4187,9 @@ parser_error_t _getMethod_ItemValue_V2(
                 &m->basic.elections_vote_V2.votes,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* elections_vote_V2 - value */;
+        case 1: /* elections_vote_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.elections_vote_V2.value,
+                &m->basic.elections_vote_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3774,9 +4327,9 @@ parser_error_t _getMethod_ItemValue_V2(
         }
     case 4096: /* module 16 call 0 */
         switch (itemIdx) {
-        case 0: /* treasury_propose_spend_V2 - value */;
+        case 0: /* treasury_propose_spend_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.treasury_propose_spend_V2.value,
+                &m->basic.treasury_propose_spend_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend_V2 - beneficiary */;
@@ -4319,9 +4872,9 @@ parser_error_t _getMethod_ItemValue_V2(
         }
     case 6912: /* module 27 call 0 */
         switch (itemIdx) {
-        case 0: /* bounties_propose_bounty_V2 - value */;
+        case 0: /* bounties_propose_bounty_V2 - amount */;
             return _toStringCompactBalanceOf(
-                &m->basic.bounties_propose_bounty_V2.value,
+                &m->basic.bounties_propose_bounty_V2.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* bounties_propose_bounty_V2 - description */;
@@ -4427,6 +4980,286 @@ parser_error_t _getMethod_ItemValue_V2(
         case 1: /* bounties_extend_bounty_expiry_V2 - _remark */;
             return _toStringBytes(
                 &m->basic.bounties_extend_bounty_expiry_V2._remark,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7680: /* module 30 call 0 */
+        switch (itemIdx) {
+        case 0: /* democracy_propose_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_propose_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_propose_V2 - amount */;
+            return _toStringCompactBalanceOf(
+                &m->basic.democracy_propose_V2.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7681: /* module 30 call 1 */
+        switch (itemIdx) {
+        case 0: /* democracy_second_V2 - proposal */;
+            return _toStringCompactPropIndex_V2(
+                &m->basic.democracy_second_V2.proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_second_V2 - seconds_upper_bound */;
+            return _toStringCompactu32(
+                &m->basic.democracy_second_V2.seconds_upper_bound,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7682: /* module 30 call 2 */
+        switch (itemIdx) {
+        case 0: /* democracy_vote_V2 - ref_index */;
+            return _toStringCompactReferendumIndex_V2(
+                &m->basic.democracy_vote_V2.ref_index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_vote_V2 - vote */;
+            return _toStringAccountVote_V2(
+                &m->basic.democracy_vote_V2.vote,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7683: /* module 30 call 3 */
+        switch (itemIdx) {
+        case 0: /* democracy_emergency_cancel_V2 - ref_index */;
+            return _toStringReferendumIndex_V2(
+                &m->basic.democracy_emergency_cancel_V2.ref_index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7684: /* module 30 call 4 */
+        switch (itemIdx) {
+        case 0: /* democracy_external_propose_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_external_propose_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7685: /* module 30 call 5 */
+        switch (itemIdx) {
+        case 0: /* democracy_external_propose_majority_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_external_propose_majority_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7686: /* module 30 call 6 */
+        switch (itemIdx) {
+        case 0: /* democracy_external_propose_default_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_external_propose_default_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7687: /* module 30 call 7 */
+        switch (itemIdx) {
+        case 0: /* democracy_fast_track_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_fast_track_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_fast_track_V2 - voting_period */;
+            return _toStringBlockNumber(
+                &m->basic.democracy_fast_track_V2.voting_period,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* democracy_fast_track_V2 - delay */;
+            return _toStringBlockNumber(
+                &m->basic.democracy_fast_track_V2.delay,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7688: /* module 30 call 8 */
+        switch (itemIdx) {
+        case 0: /* democracy_veto_external_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_veto_external_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7689: /* module 30 call 9 */
+        switch (itemIdx) {
+        case 0: /* democracy_cancel_referendum_V2 - ref_index */;
+            return _toStringCompactReferendumIndex_V2(
+                &m->basic.democracy_cancel_referendum_V2.ref_index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7690: /* module 30 call 10 */
+        switch (itemIdx) {
+        case 0: /* democracy_cancel_queued_V2 - which */;
+            return _toStringReferendumIndex_V2(
+                &m->basic.democracy_cancel_queued_V2.which,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7691: /* module 30 call 11 */
+        switch (itemIdx) {
+        case 0: /* democracy_delegate_V2 - to */;
+            return _toStringAccountId_V2(
+                &m->basic.democracy_delegate_V2.to,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_delegate_V2 - conviction */;
+            return _toStringConviction_V2(
+                &m->basic.democracy_delegate_V2.conviction,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* democracy_delegate_V2 - balance */;
+            return _toStringBalanceOf(
+                &m->basic.democracy_delegate_V2.balance,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7692: /* module 30 call 12 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
+    case 7693: /* module 30 call 13 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
+    case 7694: /* module 30 call 14 */
+        switch (itemIdx) {
+        case 0: /* democracy_note_preimage_V2 - encoded_proposal */;
+            return _toStringBytes(
+                &m->basic.democracy_note_preimage_V2.encoded_proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7695: /* module 30 call 15 */
+        switch (itemIdx) {
+        case 0: /* democracy_note_preimage_operational_V2 - encoded_proposal */;
+            return _toStringBytes(
+                &m->basic.democracy_note_preimage_operational_V2.encoded_proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7696: /* module 30 call 16 */
+        switch (itemIdx) {
+        case 0: /* democracy_note_imminent_preimage_V2 - encoded_proposal */;
+            return _toStringBytes(
+                &m->basic.democracy_note_imminent_preimage_V2.encoded_proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7697: /* module 30 call 17 */
+        switch (itemIdx) {
+        case 0: /* democracy_note_imminent_preimage_operational_V2 - encoded_proposal */;
+            return _toStringBytes(
+                &m->basic.democracy_note_imminent_preimage_operational_V2.encoded_proposal,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7698: /* module 30 call 18 */
+        switch (itemIdx) {
+        case 0: /* democracy_reap_preimage_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_reap_preimage_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_reap_preimage_V2 - proposal_len_upper_bound */;
+            return _toStringCompactu32(
+                &m->basic.democracy_reap_preimage_V2.proposal_len_upper_bound,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7699: /* module 30 call 19 */
+        switch (itemIdx) {
+        case 0: /* democracy_unlock_V2 - target */;
+            return _toStringAccountId_V2(
+                &m->basic.democracy_unlock_V2.target,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7700: /* module 30 call 20 */
+        switch (itemIdx) {
+        case 0: /* democracy_remove_vote_V2 - index */;
+            return _toStringReferendumIndex_V2(
+                &m->basic.democracy_remove_vote_V2.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7701: /* module 30 call 21 */
+        switch (itemIdx) {
+        case 0: /* democracy_remove_other_vote_V2 - target */;
+            return _toStringAccountId_V2(
+                &m->basic.democracy_remove_other_vote_V2.target,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_remove_other_vote_V2 - index */;
+            return _toStringReferendumIndex_V2(
+                &m->basic.democracy_remove_other_vote_V2.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7702: /* module 30 call 22 */
+        switch (itemIdx) {
+        case 0: /* democracy_enact_proposal_V2 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.democracy_enact_proposal_V2.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* democracy_enact_proposal_V2 - index */;
+            return _toStringReferendumIndex_V2(
+                &m->basic.democracy_enact_proposal_V2.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 7704: /* module 30 call 24 */
+        switch (itemIdx) {
+        case 0: /* democracy_cancel_proposal_V2 - prop_index */;
+            return _toStringCompactPropIndex_V2(
+                &m->basic.democracy_cancel_proposal_V2.prop_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4546,6 +5379,7 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 258: // Utility:Batch all
     case 768: // Timestamp:Set
     case 1280: // Indices:Claim
+    case 1281: // Indices:Transfer
     case 1282: // Indices:Free
     case 1283: // Indices:Force transfer
     case 1284: // Indices:Freeze
@@ -4563,6 +5397,7 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 2314: // Staking:Increase validator count
     case 2316: // Staking:Force no eras
     case 2317: // Staking:Force new era
+    case 2318: // Staking:Set invulnerables
     case 2319: // Staking:Force unstake
     case 2320: // Staking:Force new era always
     case 2321: // Staking:Cancel deferred slash
@@ -4570,6 +5405,7 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 2323: // Staking:Rebond
     case 2324: // Staking:Set history depth
     case 2325: // Staking:Reap stash
+    case 2326: // Staking:Kick
     case 2328: // Staking:Chill other
     case 2560: // Session:Set keys
     case 2561: // Session:Purge keys
@@ -4639,6 +5475,30 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 6918: // Bounties:Claim bounty
     case 6919: // Bounties:Close bounty
     case 6920: // Bounties:Extend bounty expiry
+    case 7680: // Democracy:Propose
+    case 7681: // Democracy:Second
+    case 7682: // Democracy:Vote
+    case 7683: // Democracy:Emergency cancel
+    case 7684: // Democracy:External propose
+    case 7685: // Democracy:External propose majority
+    case 7686: // Democracy:External propose default
+    case 7687: // Democracy:Fast track
+    case 7688: // Democracy:Veto external
+    case 7689: // Democracy:Cancel referendum
+    case 7690: // Democracy:Cancel queued
+    case 7691: // Democracy:Delegate
+    case 7692: // Democracy:Undelegate
+    case 7693: // Democracy:Clear public proposals
+    case 7694: // Democracy:Note preimage
+    case 7695: // Democracy:Note preimage operational
+    case 7696: // Democracy:Note imminent preimage
+    case 7697: // Democracy:Note imminent preimage operational
+    case 7698: // Democracy:Reap preimage
+    case 7699: // Democracy:Unlock
+    case 7700: // Democracy:Remove vote
+    case 7701: // Democracy:Remove other vote
+    case 7702: // Democracy:Enact proposal
+    case 7704: // Democracy:Cancel proposal
     case 7168: // OrmlVesting:Claim
     case 7424: // PDEXMigration:Set migration operational status
     case 7425: // PDEXMigration:Set relayer status
