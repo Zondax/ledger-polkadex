@@ -42,6 +42,7 @@ static const char* STR_MO_BOUNTIES = "Bounties";
 static const char* STR_MO_ASSETS = "Assets";
 static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_TOKENFAUCET = "Tokenfaucet";
+static const char* STR_MO_ETHEREUM = "Ethereum";
 
 // Methods names
 static const char* STR_ME_FILL_BLOCK = "Fill block";
@@ -152,6 +153,7 @@ static const char* STR_ME_EXTEND_BOUNTY_EXPIRY = "Extend bounty expiry";
 static const char* STR_ME_CANCEL_APPROVAL = "Cancel approval";
 static const char* STR_ME_REBAG = "Rebag";
 static const char* STR_ME_CREDIT_ACCOUNT_WITH_TOKENS_UNSIGNED = "Credit account with tokens unsigned";
+static const char* STR_ME_RESET_ETHEREUM = "Reset ethereum";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -265,6 +267,15 @@ static const char* STR_IT_decimals = "Decimals";
 static const char* STR_IT_is_frozen = "Is frozen";
 static const char* STR_IT_destination = "Destination";
 static const char* STR_IT_dislocated = "Dislocated";
+static const char* STR_IT_asset = "Asset";
+static const char* STR_IT_transaction_hash = "Transaction hash";
+static const char* STR_IT_ethereum_block_no = "Ethereum block no";
+static const char* STR_IT_signature = "Signature";
+static const char* STR_IT_public_key_bytes = "Public key bytes";
+static const char* STR_IT_pdex_address = "Pdex address";
+static const char* STR_IT_block = "Block";
+static const char* STR_IT_token_id = "Token id";
+static const char* STR_IT_recipient = "Recipient";
 
 #ifdef __cplusplus
 }

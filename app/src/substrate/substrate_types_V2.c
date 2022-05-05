@@ -276,7 +276,10 @@ parser_error_t _readRewardDestination_V2(parser_context_t* c, pd_RewardDestinati
 {
     CHECK_INPUT()
     CHECK_ERROR(_readUInt8(c, &v->value))
-    if (v->value > 2) {
+
+    if (v->value == 3) {
+        CHECK_ERROR(_readAccountId_V2(c, &v->accountId))
+    } else if (v->value > 4) {
         return parser_value_out_of_range;
     }
     return parser_ok;
@@ -651,7 +654,7 @@ parser_error_t _toStringDestroyWitness_V2(
     CLEAN_AND_CHECK()
 
     // First measure number of pages
-    uint8_t pages[3];
+    uint8_t pages[3] = { 0 };
     CHECK_ERROR(_toStringCompactu32(&v->accounts, outValue, outValueLen, 0, &pages[0]))
     CHECK_ERROR(_toStringCompactu32(&v->sufficients, outValue, outValueLen, 0, &pages[1]))
     CHECK_ERROR(_toStringCompactu32(&v->approvals, outValue, outValueLen, 0, &pages[2]))
@@ -1018,6 +1021,12 @@ parser_error_t _toStringRewardDestination_V2(
     case 2:
         snprintf(outValue, outValueLen, "Controller");
         break;
+    case 3:
+        CHECK_ERROR(_toStringAccountId_V2(&v->accountId, outValue, outValueLen, pageIdx, pageCount));
+        break;
+    case 4:
+        snprintf(outValue, outValueLen, "None");
+        break;
     default:
         return parser_print_not_supported;
     }
@@ -1123,7 +1132,7 @@ parser_error_t _toStringTimepoint_V2(
     CLEAN_AND_CHECK()
 
     // First measure number of pages
-    uint8_t pages[2];
+    uint8_t pages[2] = { 0 };
     CHECK_ERROR(_toStringBlockNumber(&v->height, outValue, outValueLen, 0, &pages[0]))
     CHECK_ERROR(_toStringu32(&v->index, outValue, outValueLen, 0, &pages[1]))
 
@@ -1171,7 +1180,7 @@ parser_error_t _toStringValidatorPrefs_V2(
     CLEAN_AND_CHECK()
 
     // First measure number of pages
-    uint8_t pages[2];
+    uint8_t pages[2] = { 0 };
     CHECK_ERROR(_toStringCompactPerBill_V2(&v->commission, outValue, outValueLen, 0, &pages[0]))
     CHECK_ERROR(_toStringbool(&v->blocked, outValue, outValueLen, 0, &pages[1]))
 

@@ -45,6 +45,7 @@ extern "C" {
 #define PD_CALL_PROXY_V2 26
 #define PD_CALL_MULTISIG_V2 27
 #define PD_CALL_BOUNTIES_V2 28
+#define PD_CALL_ETHEREUM_V2 38
 #define PD_CALL_ASSETS_V2 39
 #define PD_CALL_BAGSLIST_V2 40
 #define PD_CALL_TOKENFAUCET_V2 41
@@ -606,6 +607,10 @@ typedef struct {
     pd_Bytes_t remark;
 } pd_bounties_extend_bounty_expiry_V2_t;
 
+#define PD_CALL_ETHEREUM_RESET_ETHEREUM_V2 5
+typedef struct {
+} pd_ethereum_reset_ethereum_V2_t;
+
 #define PD_CALL_ASSETS_CANCEL_APPROVAL_V2 20
 typedef struct {
     pd_Compactu128_t id;
@@ -726,6 +731,7 @@ typedef union {
     pd_bounties_claim_bounty_V2_t bounties_claim_bounty_V2;
     pd_bounties_close_bounty_V2_t bounties_close_bounty_V2;
     pd_bounties_extend_bounty_expiry_V2_t bounties_extend_bounty_expiry_V2;
+    pd_ethereum_reset_ethereum_V2_t ethereum_reset_ethereum_V2;
     pd_assets_cancel_approval_V2_t assets_cancel_approval_V2;
     pd_bagslist_rebag_V2_t bagslist_rebag_V2;
     pd_tokenfaucet_credit_account_with_tokens_unsigned_V2_t tokenfaucet_credit_account_with_tokens_unsigned_V2;
