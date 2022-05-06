@@ -31,7 +31,7 @@ beforeAll(async () => {
   await Zemu.checkAndPullImage()
 })
 
-async function activateCrowdloanMode(sim: any, model_prefix: string) {
+async function activateCrowdloanMode(sim: any) {
   // Crowdloan can be activate only when expert mode is enabled
   await sim.clickRight()
   await sim.clickRight()
@@ -83,7 +83,7 @@ describe('Crowdloan', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      await activateCrowdloanMode(sim, m.prefix)
+      await activateCrowdloanMode(sim)
 
       resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
 
