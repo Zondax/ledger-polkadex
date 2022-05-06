@@ -334,6 +334,7 @@
 |Submit new ethereum block |    |   |   | `EthereumBlockWithApprovalsEthereumId` block <br/>`EthereumIdasRuntimeAppPublicSignature` signature <br/> |
 |Submit unprocessed ethereum block |    |   |   | `BoxUnprocessedEthereumBlock` block <br/> |
 |Withdraw |    |   |   | `H160` token_id <br/>`Balance` amount <br/>`H160` recipient <br/> |
+|Reset ethereum |    | :heavy_check_mark: |   |  |
 
 ## Assets
 

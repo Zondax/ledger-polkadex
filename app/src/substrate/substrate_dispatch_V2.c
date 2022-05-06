@@ -901,6 +901,12 @@ __Z_INLINE parser_error_t _readMethod_bounties_extend_bounty_expiry_V2(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_ethereum_reset_ethereum_V2(
+    parser_context_t* c, pd_ethereum_reset_ethereum_V2_t* m)
+{
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_assets_cancel_approval_V2(
     parser_context_t* c, pd_assets_cancel_approval_V2_t* m)
 {
@@ -1282,6 +1288,9 @@ parser_error_t _readMethod_V2(
     case 7176: /* module 28 call 8 */
         CHECK_ERROR(_readMethod_bounties_extend_bounty_expiry_V2(c, &method->basic.bounties_extend_bounty_expiry_V2))
         break;
+    case 9733: /* module 38 call 5 */
+        CHECK_ERROR(_readMethod_ethereum_reset_ethereum_V2(c, &method->basic.ethereum_reset_ethereum_V2))
+        break;
     case 10004: /* module 39 call 20 */
         CHECK_ERROR(_readMethod_assets_cancel_approval_V2(c, &method->basic.assets_cancel_approval_V2))
         break;
@@ -1346,6 +1355,8 @@ const char* _getMethod_ModuleName_V2(uint8_t moduleIdx)
         return STR_MO_MULTISIG;
     case 28:
         return STR_MO_BOUNTIES;
+    case 38:
+        return STR_MO_ETHEREUM;
     case 39:
         return STR_MO_ASSETS;
     case 40:
@@ -1606,6 +1617,8 @@ const char* _getMethod_Name_V2_ParserFull(uint16_t callPrivIdx)
         return STR_ME_CLOSE_BOUNTY;
     case 7176: /* module 28 call 8 */
         return STR_ME_EXTEND_BOUNTY_EXPIRY;
+    case 9733: /* module 38 call 5 */
+        return STR_ME_RESET_ETHEREUM;
     case 10004: /* module 39 call 20 */
         return STR_ME_CANCEL_APPROVAL;
     case 10240: /* module 40 call 0 */
@@ -1856,6 +1869,8 @@ uint8_t _getMethod_NumItems_V2(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 7176: /* module 28 call 8 */
         return 2;
+    case 9733: /* module 38 call 5 */
+        return 0;
     case 10004: /* module 39 call 20 */
         return 2;
     case 10240: /* module 40 call 0 */
@@ -2830,6 +2845,11 @@ const char* _getMethod_ItemName_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_bounty_id;
         case 1:
             return STR_IT_remark;
+        default:
+            return NULL;
+        }
+    case 9733: /* module 38 call 5 */
+        switch (itemIdx) {
         default:
             return NULL;
         }
@@ -4404,6 +4424,11 @@ parser_error_t _getMethod_ItemValue_V2(
         default:
             return parser_no_data;
         }
+    case 9733: /* module 38 call 5 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
     case 10004: /* module 39 call 20 */
         switch (itemIdx) {
         case 0: /* assets_cancel_approval_V2 - id */;
@@ -4584,6 +4609,7 @@ bool _getMethod_IsNestingSupported_V2(uint8_t moduleIdx, uint8_t callIdx)
     case 7174: // Bounties:Claim bounty
     case 7175: // Bounties:Close bounty
     case 7176: // Bounties:Extend bounty expiry
+    case 9733: // Ethereum:Reset ethereum
     case 10004: // Assets:Cancel approval
     case 10240: // BagsList:Rebag
     case 10496: // TokenFaucet:Credit account with tokens unsigned

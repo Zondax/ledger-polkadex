@@ -109,6 +109,11 @@ typedef struct {
 } pd_OptionTimepoint_V2_t;
 
 typedef struct {
+    uint8_t value;
+    pd_AccountId_V2_t accountId;
+} pd_RewardDestination_V2_t;
+
+typedef struct {
     pd_CompactPerBill_V2_t commission;
     pd_bool_t blocked;
 } pd_ValidatorPrefs_V2_t;
@@ -291,10 +296,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_Renouncing_V2_t;
-
-typedef struct {
-    uint8_t value;
-} pd_RewardDestination_V2_t;
 
 typedef struct {
     // TODO: Not implemented
