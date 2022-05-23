@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadex  2.274.x
+# Polkadex  2.276.x
 
 ## System
 
@@ -101,7 +101,8 @@ Please:
 |Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> |
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> |
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
-|Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> |
+|Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/> |
+|Governance fallback |    |   |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
 
 ## Staking
 
@@ -124,14 +125,15 @@ Please:
 |Set invulnerables |    | :heavy_check_mark: |   | `VecAccountId` invulnerables <br/> |
 |Force unstake |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Force new era always |    | :heavy_check_mark: |   |  |
-|Cancel deferred slash |    |   |   | `EraIndex` era <br/>`Bytes` slash_indices <br/> |
+|Cancel deferred slash |    | :heavy_check_mark: |   | `EraIndex` era <br/>`Vecu32` slash_indices <br/> |
 |Payout stakers | :heavy_check_mark:  | :heavy_check_mark: |   | `AccountId` validator_stash <br/>`EraIndex` era <br/> |
 |Rebond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> |
 |Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> |
 |Reap stash |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> |
 |Kick |    | :heavy_check_mark: |   | `VecLookupasStaticLookupSource` who <br/> |
-|Set staking limits |    |   |   | `Balance` min_nominator_bond <br/>`Balance` min_validator_bond <br/>`Optionu32` max_nominator_count <br/>`Optionu32` max_validator_count <br/>`OptionPercent` threshold <br/> |
+|Set staking configs |    | :heavy_check_mark: |   | `ConfigOpBalanceOfT` min_nominator_bond <br/>`ConfigOpBalanceOfT` min_validator_bond <br/>`ConfigOpu32` max_nominator_count <br/>`ConfigOpu32` max_validator_count <br/>`ConfigOpPercent` chill_threshold <br/>`ConfigOpPerbill` min_commission <br/> |
 |Chill other |    | :heavy_check_mark: |   | `AccountId` controller <br/> |
+|Force apply min commission |    | :heavy_check_mark: |   | `AccountId` validator_stash <br/> |
 
 ## Session
 
@@ -254,12 +256,12 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Schedule |    |   |   | `BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
+|Schedule |    |   |   | `BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
 |Cancel |    |   |   | `BlockNumber` when <br/>`u32` index <br/> |
-|Schedule named |    |   |   | `Vecu8` id <br/>`BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
+|Schedule named |    |   |   | `Vecu8` id <br/>`BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
 |Cancel named |    |   |   | `Vecu8` id <br/> |
-|Schedule after |    |   |   | `BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
-|Schedule named after |    |   |   | `Vecu8` id <br/>`BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`Call` call <br/> |
+|Schedule after |    |   |   | `BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
+|Schedule named after |    |   |   | `Vecu8` id <br/>`BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
 
 ## Proxy
 
@@ -299,6 +301,57 @@ Please:
 |Close bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> |
 |Extend bounty expiry |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/>`Bytes` remark <br/> |
 
+## Democracy
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Propose |    |   |   | `Hash` proposal_hash <br/>`CompactBalance` amount <br/> |
+|Second |    |   |   | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> |
+|Vote |    |   |   | `Compactu32` ref_index <br/>`AccountVote` vote <br/> |
+|Emergency cancel |    |   |   | `ReferendumIndex` ref_index <br/> |
+|External propose |    |   |   | `Hash` proposal_hash <br/> |
+|External propose majority |    |   |   | `Hash` proposal_hash <br/> |
+|External propose default |    |   |   | `Hash` proposal_hash <br/> |
+|Fast track |    |   |   | `Hash` proposal_hash <br/>`BlockNumber` voting_period <br/>`BlockNumber` delay <br/> |
+|Veto external |    |   |   | `Hash` proposal_hash <br/> |
+|Cancel referendum |    |   |   | `Compactu32` ref_index <br/> |
+|Cancel queued |    |   |   | `ReferendumIndex` which <br/> |
+|Delegate |    |   |   | `AccountId` to <br/>`Conviction` conviction <br/>`Balance` balance <br/> |
+|Undelegate |    |   |   |  |
+|Clear public proposals |    |   |   |  |
+|Note preimage |    |   |   | `Bytes` encoded_proposal <br/> |
+|Note preimage operational |    |   |   | `Bytes` encoded_proposal <br/> |
+|Note imminent preimage |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
+|Note imminent preimage operational |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
+|Reap preimage |    |   |   | `Hash` proposal_hash <br/>`Compactu32` proposal_len_upper_bound <br/> |
+|Unlock |    |   |   | `AccountId` target <br/> |
+|Remove vote |    |   |   | `ReferendumIndex` index <br/> |
+|Remove other vote |    |   |   | `AccountId` target <br/>`ReferendumIndex` index <br/> |
+|Enact proposal |    |   |   | `Hash` proposal_hash <br/>`ReferendumIndex` index <br/> |
+|Blacklist |    |   |   | `Hash` proposal_hash <br/>`OptionReferendumIndex` maybe_ref_index <br/> |
+|Cancel proposal |    |   |   | `Compactu32` prop_index <br/> |
+
+## Preimage
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Note preimage |    |   |   | `Vecu8` bytes <br/> |
+|Unnote preimage |    |   |   | `Hash` hash <br/> |
+|Request preimage |    |   |   | `Hash` hash <br/> |
+|Unrequest preimage |    |   |   | `Hash` hash <br/> |
+
+## ChildBounties
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Add child bounty |    |   |   | `Compactu32` parent_bounty_id <br/>`CompactBalance` amount <br/>`Vecu8` description <br/> |
+|Propose curator |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` curator <br/>`CompactBalance` fee <br/> |
+|Accept curator |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+|Unassign curator |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+|Award child bounty |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` beneficiary <br/> |
+|Claim child bounty |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+|Close child bounty |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
+
 ## OrmlVesting
 
 | Name        | Light | XL | Nesting | Arguments |
@@ -308,101 +361,13 @@ Please:
 |Update vesting schedules |    |   |   | `LookupasStaticLookupSource` who <br/>`VecVestingScheduleOf` vesting_schedules <br/> |
 |Claim for |    |   |   | `LookupasStaticLookupSource` dest <br/> |
 
-## Contracts
+## PDEXMigration
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Call |    |   |   | `LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/>`Compactu64` gas_limit <br/>`Vecu8` data <br/> |
-|Instantiate with code |    |   |   | `CompactBalance` endowment <br/>`Compactu64` gas_limit <br/>`Vecu8` code <br/>`Vecu8` data <br/>`Vecu8` salt <br/> |
-|Instantiate |    |   |   | `CompactBalance` endowment <br/>`Compactu64` gas_limit <br/>`CodeHashT` code_hash <br/>`Bytes` data <br/>`Bytes` salt <br/> |
-
-## Currencies
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Transfer |    |   |   | `LookupasStaticLookupSource` dest <br/>`CurrencyId` currency_id <br/>`Compactu128` amount <br/> |
-|Transfer native currency |    |   |   | `LookupasStaticLookupSource` dest <br/>`Compactu128` amount <br/> |
-|Update balance |    |   |   | `LookupasStaticLookupSource` who <br/>`CurrencyId` currency_id <br/>`Amount` amount <br/> |
-
-## PolkadexIdo
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Register investor |    |   |   |  |
-|Investor unlock fund |    |   |   |  |
-|Attest investor |    |   |   | `AccountId` investor <br/>`KYCStatus` kyc_status <br/> |
-|Register round |    |   |   | `Vecu8` cid <br/>`OptionAssetId` token_a <br/>`Balance` amount <br/>`AssetId` token_b <br/>`Balance` vesting_per_block <br/>`BlockNumber` funding_period <br/>`Balance` min_allocation <br/>`Balance` max_allocation <br/>`Balance` token_a_priceper_token_b <br/> |
-|Whitelist investor |    |   |   | `Hash` round_id <br/>`AccountId` investor_address <br/>`Balance` amount <br/> |
-|Claim tokens |    |   |   | `Hash` round_id <br/> |
-|Show interest in round |    |   |   | `Hash` round_id <br/>`Balance` amount <br/> |
-|Withdraw raise |    |   |   | `Hash` round_id <br/>`AccountId` beneficiary <br/> |
-|Vote |    |   |   | `Hash` round_id <br/>`Balance` amount <br/>`u8` vote_multiplier <br/>`bool` approve <br/> |
-|Set vote period |    |   |   | `BlockNumber` period <br/> |
-|Set investor lock fund period |    |   |   | `BlockNumber` period <br/> |
-|Approve ido round |    |   |   | `Hash` round_id <br/> |
-|Withdraw token |    |   |   | `Hash` round_id <br/>`AccountId` beneficiary <br/> |
-
-## Thea
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Submit keygen message |    |   |   | `TheaPayloadTheaIdKeygenRound` payload <br/>`TheaIdasRuntimeAppPublicSignature` signature <br/>`u64` rng <br/> |
-|Clean keygen messages |    |   |   | `AuthorityIndex` auth_idx <br/>`TheaIdasRuntimeAppPublicSignature` signature <br/>`u64` rng <br/> |
-|Submit offline message |    |   |   | `TheaPayloadTheaIdOfflineStageRound` payload <br/>`H256` payload_array <br/>`TheaIdasRuntimeAppPublicSignature` signature <br/>`u64` rng <br/> |
-|Submit signing message |    |   |   | `BlockNumber` at <br/>`SigningSessionPayloadTheaId` payload <br/>`TheaIdasRuntimeAppPublicSignature` signature <br/>`u64` rng <br/> |
-|Submit signed payload |    |   |   | `SignedTheaPayload` payload <br/>`u64` rng <br/> |
-|Submit ecdsa public key |    |   |   | `thea_primitivesValidatorSetId` set_id <br/>`Public` public_key <br/> |
-|Register deposit address |    |   |   |  |
-|Register offense |    |   |   | `OffenseReportAccountIdKeygenRound` offence <br/> |
-
-## Ethereum
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Create asset |    |   |   | `H160` asset <br/> |
-|Transfer claim |    |   |   | `H256` transaction_hash <br/>`u64` ethereum_block_no <br/>`Vecu8` signature <br/>`Vecu8` public_key_bytes <br/>`H160` asset <br/>`Tasframe_systemConfigAccountId` pdex_address <br/>`Balance` amount <br/> |
-|Submit new ethereum block |    |   |   | `EthereumBlockWithApprovalsEthereumId` block <br/>`EthereumIdasRuntimeAppPublicSignature` signature <br/> |
-|Submit unprocessed ethereum block |    |   |   | `BoxUnprocessedEthereumBlock` block <br/> |
-|Withdraw |    |   |   | `H160` token_id <br/>`Balance` amount <br/>`H160` recipient <br/> |
-|Reset ethereum |    | :heavy_check_mark: |   |  |
-
-## Assets
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Create |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` admin <br/>`Balance` min_balance <br/> |
-|Force create |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`bool` is_sufficient <br/>`Compactu128` min_balance <br/> |
-|Destroy |    |   |   | `Compactu128` id <br/>`DestroyWitness` witness <br/> |
-|Mint |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` beneficiary <br/>`Compactu128` amount <br/> |
-|Burn |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` who <br/>`Compactu128` amount <br/> |
-|Transfer |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` target <br/>`Compactu128` amount <br/> |
-|Transfer keep alive |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` target <br/>`Compactu128` amount <br/> |
-|Force transfer |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` source <br/>`LookupasStaticLookupSource` dest <br/>`Compactu128` amount <br/> |
-|Freeze |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` who <br/> |
-|Thaw |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` who <br/> |
-|Freeze asset |    |   |   | `Compactu128` id <br/> |
-|Thaw asset |    |   |   | `Compactu128` id <br/> |
-|Transfer ownership |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/> |
-|Set team |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` issuer <br/>`LookupasStaticLookupSource` admin <br/>`LookupasStaticLookupSource` freezer <br/> |
-|Set metadata |    |   |   | `Compactu128` id <br/>`Vecu8` name <br/>`Vecu8` symbol <br/>`u8` decimals <br/> |
-|Clear metadata |    |   |   | `Compactu128` id <br/> |
-|Force set metadata |    |   |   | `Compactu128` id <br/>`Vecu8` name <br/>`Vecu8` symbol <br/>`u8` decimals <br/>`bool` is_frozen <br/> |
-|Force clear metadata |    |   |   | `Compactu128` id <br/> |
-|Force asset status |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`LookupasStaticLookupSource` issuer <br/>`LookupasStaticLookupSource` admin <br/>`LookupasStaticLookupSource` freezer <br/>`Compactu128` min_balance <br/>`bool` is_sufficient <br/>`bool` is_frozen <br/> |
-|Approve transfer |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` delegate <br/>`Compactu128` amount <br/> |
-|Cancel approval |    | :heavy_check_mark: |   | `Compactu128` id <br/>`LookupasStaticLookupSource` delegate <br/> |
-|Force cancel approval |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`LookupasStaticLookupSource` delegate <br/> |
-|Transfer approved |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`LookupasStaticLookupSource` destination <br/>`Compactu128` amount <br/> |
-
-## BagsList
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Rebag |    | :heavy_check_mark: |   | `AccountId` dislocated <br/> |
-
-## TokenFaucet
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Credit account with tokens unsigned |    | :heavy_check_mark: |   | `AccountId` account <br/> |
+|Set migration operational status |    |   |   | `bool` status <br/> |
+|Set relayer status |    |   |   | `AccountId` relayer <br/>`bool` status <br/> |
+|Mint |    |   |   | `AccountId` beneficiary <br/>`Balance` amount <br/>`Hash` eth_tx <br/> |
+|Unlock |    |   |   |  |
+|Remove minted tokens |    |   |   | `AccountId` beneficiary <br/> |
 
