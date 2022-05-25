@@ -40,15 +40,12 @@ extern "C" {
 #define PD_CALL_GRANDPA_V2 15
 #define PD_CALL_TREASURY_V2 16
 #define PD_CALL_SUDO_V2 17
-#define PD_CALL_IDENTITY_V2 23
-#define PD_CALL_RECOVERY_V2 24
-#define PD_CALL_PROXY_V2 26
-#define PD_CALL_MULTISIG_V2 27
-#define PD_CALL_BOUNTIES_V2 28
-#define PD_CALL_ETHEREUM_V2 38
-#define PD_CALL_ASSETS_V2 39
-#define PD_CALL_BAGSLIST_V2 40
-#define PD_CALL_TOKENFAUCET_V2 41
+#define PD_CALL_IDENTITY_V2 22
+#define PD_CALL_RECOVERY_V2 23
+#define PD_CALL_PROXY_V2 25
+#define PD_CALL_MULTISIG_V2 26
+#define PD_CALL_BOUNTIES_V2 27
+#define PD_CALL_DEMOCRACY_V2 30
 
 #define PD_CALL_UTILITY_BATCH_V2 0
 typedef struct {
@@ -207,6 +204,12 @@ typedef struct {
 typedef struct {
 } pd_staking_force_new_era_always_V2_t;
 
+#define PD_CALL_STAKING_CANCEL_DEFERRED_SLASH_V2 17
+typedef struct {
+    pd_EraIndex_V2_t era;
+    pd_Vecu32_t slash_indices;
+} pd_staking_cancel_deferred_slash_V2_t;
+
 #define PD_CALL_STAKING_SET_HISTORY_DEPTH_V2 20
 typedef struct {
     pd_Compactu32_t new_history_depth;
@@ -224,10 +227,25 @@ typedef struct {
     pd_VecLookupasStaticLookupSource_V2_t who;
 } pd_staking_kick_V2_t;
 
+#define PD_CALL_STAKING_SET_STAKING_CONFIGS_V2 23
+typedef struct {
+    pd_ConfigOpBalanceOfT_V2_t min_nominator_bond;
+    pd_ConfigOpBalanceOfT_V2_t min_validator_bond;
+    pd_ConfigOpu32_V2_t max_nominator_count;
+    pd_ConfigOpu32_V2_t max_validator_count;
+    pd_ConfigOpPercent_V2_t chill_threshold;
+    pd_ConfigOpPerbill_V2_t min_commission;
+} pd_staking_set_staking_configs_V2_t;
+
 #define PD_CALL_STAKING_CHILL_OTHER_V2 24
 typedef struct {
     pd_AccountId_V2_t controller;
 } pd_staking_chill_other_V2_t;
+
+#define PD_CALL_STAKING_FORCE_APPLY_MIN_COMMISSION_V2 25
+typedef struct {
+    pd_AccountId_V2_t validator_stash;
+} pd_staking_force_apply_min_commission_V2_t;
 
 #define PD_CALL_COUNCIL_SET_MEMBERS_V2 0
 typedef struct {
@@ -607,25 +625,15 @@ typedef struct {
     pd_Bytes_t remark;
 } pd_bounties_extend_bounty_expiry_V2_t;
 
-#define PD_CALL_ETHEREUM_RESET_ETHEREUM_V2 5
+#define PD_CALL_DEMOCRACY_NOTE_IMMINENT_PREIMAGE_V2 16
 typedef struct {
-} pd_ethereum_reset_ethereum_V2_t;
+    pd_Bytes_t encoded_proposal;
+} pd_democracy_note_imminent_preimage_V2_t;
 
-#define PD_CALL_ASSETS_CANCEL_APPROVAL_V2 20
+#define PD_CALL_DEMOCRACY_NOTE_IMMINENT_PREIMAGE_OPERATIONAL_V2 17
 typedef struct {
-    pd_Compactu128_t id;
-    pd_LookupasStaticLookupSource_V2_t delegate;
-} pd_assets_cancel_approval_V2_t;
-
-#define PD_CALL_BAGSLIST_REBAG_V2 0
-typedef struct {
-    pd_AccountId_V2_t dislocated;
-} pd_bagslist_rebag_V2_t;
-
-#define PD_CALL_TOKENFAUCET_CREDIT_ACCOUNT_WITH_TOKENS_UNSIGNED_V2 0
-typedef struct {
-    pd_AccountId_V2_t account;
-} pd_tokenfaucet_credit_account_with_tokens_unsigned_V2_t;
+    pd_Bytes_t encoded_proposal;
+} pd_democracy_note_imminent_preimage_operational_V2_t;
 
 #endif
 
@@ -661,10 +669,13 @@ typedef union {
     pd_staking_set_invulnerables_V2_t staking_set_invulnerables_V2;
     pd_staking_force_unstake_V2_t staking_force_unstake_V2;
     pd_staking_force_new_era_always_V2_t staking_force_new_era_always_V2;
+    pd_staking_cancel_deferred_slash_V2_t staking_cancel_deferred_slash_V2;
     pd_staking_set_history_depth_V2_t staking_set_history_depth_V2;
     pd_staking_reap_stash_V2_t staking_reap_stash_V2;
     pd_staking_kick_V2_t staking_kick_V2;
+    pd_staking_set_staking_configs_V2_t staking_set_staking_configs_V2;
     pd_staking_chill_other_V2_t staking_chill_other_V2;
+    pd_staking_force_apply_min_commission_V2_t staking_force_apply_min_commission_V2;
     pd_council_set_members_V2_t council_set_members_V2;
     pd_council_execute_V2_t council_execute_V2;
     pd_council_propose_V2_t council_propose_V2;
@@ -731,10 +742,8 @@ typedef union {
     pd_bounties_claim_bounty_V2_t bounties_claim_bounty_V2;
     pd_bounties_close_bounty_V2_t bounties_close_bounty_V2;
     pd_bounties_extend_bounty_expiry_V2_t bounties_extend_bounty_expiry_V2;
-    pd_ethereum_reset_ethereum_V2_t ethereum_reset_ethereum_V2;
-    pd_assets_cancel_approval_V2_t assets_cancel_approval_V2;
-    pd_bagslist_rebag_V2_t bagslist_rebag_V2;
-    pd_tokenfaucet_credit_account_with_tokens_unsigned_V2_t tokenfaucet_credit_account_with_tokens_unsigned_V2;
+    pd_democracy_note_imminent_preimage_V2_t democracy_note_imminent_preimage_V2;
+    pd_democracy_note_imminent_preimage_operational_V2_t democracy_note_imminent_preimage_operational_V2;
 #endif
 } pd_MethodBasic_V2_t;
 

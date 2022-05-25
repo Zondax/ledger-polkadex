@@ -35,8 +35,18 @@ typedef struct {
 } pd_CompactAccountIndex_V2_t;
 
 typedef struct {
-    uint32_t value;
-} pd_AssetId_V2_t;
+    uint8_t value;
+} pd_Vote_V2_t;
+
+typedef struct {
+    pd_BalanceOf_t aye;
+    pd_BalanceOf_t nay;
+} pd_AccountVoteSplit_V2_t;
+
+typedef struct {
+    pd_Vote_V2_t vote;
+    pd_BalanceOf_t balance;
+} pd_AccountVoteStandard_V2_t;
 
 typedef struct {
     compactInt_t value;
@@ -66,12 +76,20 @@ typedef struct {
 } pd_LookupasStaticLookupSource_V2_t;
 
 typedef struct {
-    compactInt_t value;
+    uint32_t value;
+} pd_Perbill_V2_t;
+
+typedef struct {
+    uint8_t value;
 } pd_Percent_V2_t;
 
 typedef struct {
     uint8_t value;
 } pd_ProxyType_V2_t;
+
+typedef struct {
+    uint32_t value;
+} pd_ReferendumIndex_V2_t;
 
 typedef struct {
     pd_BlockNumber_t height;
@@ -94,10 +112,27 @@ typedef struct {
 } pd_schedulePeriodBlockNumber_V2_t;
 
 typedef struct {
-    pd_Compactu32_t accounts;
-    pd_Compactu32_t sufficients;
-    pd_Compactu32_t approvals;
-} pd_DestroyWitness_V2_t;
+    uint8_t value;
+    union {
+        pd_AccountVoteStandard_V2_t voteStandard;
+        pd_AccountVoteSplit_V2_t voteSplit;
+    };
+} pd_AccountVote_V2_t;
+
+typedef struct {
+    uint8_t value;
+    pd_Balance_t set;
+} pd_ConfigOpBalanceOfT_V2_t;
+
+typedef struct {
+    uint8_t value;
+    pd_Perbill_V2_t set;
+} pd_ConfigOpPerbill_V2_t;
+
+typedef struct {
+    uint8_t value;
+    pd_Percent_V2_t set;
+} pd_ConfigOpPercent_V2_t;
 
 typedef struct {
     pd_Call_t call;
@@ -131,17 +166,12 @@ typedef struct {
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Amount_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_AuthorityIdasRuntimeAppPublicSignature_V2_t;
 
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_AuthorityIndex_V2_t;
+} pd_BoxCallOrHashOfT_V2_t;
 
 typedef struct {
     // TODO: Not implemented
@@ -169,42 +199,21 @@ typedef struct {
 } pd_BoxRawSolutionSolutionOfT_V2_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_BoxUnprocessedEthereumBlock_V2_t;
-
-typedef struct {
     const uint8_t* _ptr;
 } pd_CallHashOf_V2_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_CodeHashT_V2_t;
+    uint8_t value;
+    uint32_t set;
+} pd_ConfigOpu32_V2_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_CurrencyId_V2_t;
+    uint8_t value;
+} pd_Conviction_V2_t;
 
 typedef struct {
     uint32_t value;
 } pd_EraIndex_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_EthereumBlockWithApprovalsEthereumId_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_EthereumIdasRuntimeAppPublicSignature_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_H160_V2_t;
 
 typedef struct {
     // TODO: Not implemented
@@ -220,11 +229,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_JudgementBalanceOfT_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_KYCStatus_V2_t;
 
 typedef struct {
     // TODO: Not implemented
@@ -245,19 +249,9 @@ typedef struct {
 } pd_NextConfigDescriptor_V2_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_OffenseReportAccountIdKeygenRound_V2_t;
-
-typedef struct {
     uint8_t some;
     pd_AccountId_V2_t contained;
 } pd_OptionAccountId_V2_t;
-
-typedef struct {
-    uint8_t some;
-    pd_AssetId_V2_t contained;
-} pd_OptionAssetId_V2_t;
 
 typedef struct {
     uint8_t some;
@@ -266,27 +260,18 @@ typedef struct {
 
 typedef struct {
     uint8_t some;
-    pd_Percent_V2_t contained;
-} pd_OptionPercent_V2_t;
-
-typedef struct {
-    uint8_t some;
     pd_ProxyType_V2_t contained;
 } pd_OptionProxyType_V2_t;
 
 typedef struct {
     uint8_t some;
+    pd_ReferendumIndex_V2_t contained;
+} pd_OptionReferendumIndex_V2_t;
+
+typedef struct {
+    uint8_t some;
     pd_schedulePeriodBlockNumber_V2_t contained;
 } pd_OptionschedulePeriodBlockNumber_V2_t;
-
-typedef struct {
-    uint32_t value;
-} pd_Perbill_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Public_V2_t;
 
 typedef struct {
     uint32_t value;
@@ -300,42 +285,12 @@ typedef struct {
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_SignedTheaPayload_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_SigningSessionPayloadTheaId_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_SolutionOrSnapshotSize_V2_t;
 
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_SupportsAccountId_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_Tasframe_systemConfigAccountId_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_TheaIdasRuntimeAppPublicSignature_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_TheaPayloadTheaIdKeygenRound_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_TheaPayloadTheaIdOfflineStageRound_V2_t;
 
 typedef struct {
     uint64_t _len;
@@ -375,11 +330,6 @@ typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_schedulePriority_V2_t;
-
-typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
-} pd_V2_thea_primitivesValidatorSetId_t;
 
 #ifdef __cplusplus
 }
