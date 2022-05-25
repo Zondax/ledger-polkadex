@@ -1059,18 +1059,12 @@ parser_error_t _toStringPercent_V2(
     uint8_t pageIdx,
     uint8_t* pageCount)
 {
-    char bufferUI[100];
-    char ratioBuffer[80];
-    memset(outValue, 0, outValueLen);
-    memset(ratioBuffer, 0, sizeof(ratioBuffer));
-    memset(bufferUI, 0, sizeof(bufferUI));
-    *pageCount = 1;
+    char bufferUI[50];
+    char bufferRatio[50];
 
-    if (fpuint64_to_str(ratioBuffer, sizeof(ratioBuffer), v->value, 7) == 0) {
-        return parser_unexpected_value;
-    }
+    uint64_to_str(bufferRatio, sizeof(bufferRatio), v->value);
 
-    snprintf(bufferUI, sizeof(bufferUI), "%s%%", ratioBuffer);
+    snprintf(bufferUI, sizeof(bufferUI), "%s%%", bufferRatio);
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
 }
