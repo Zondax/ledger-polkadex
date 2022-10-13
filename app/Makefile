@@ -1,6 +1,6 @@
 #*******************************************************************************
 #  Ledger App
-#  (c) 2019 - 2022 Zondax GmbH
+#  (c) 2019 - 2022 Zondax AG
 #  (c) 2017 Ledger
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,8 @@ all: bin/app.elf
 	@echo "APPNAME=\"${APPNAME}\"" >> $(OUTPUT_INSTALLER)
 	@echo "APPVERSION=\"${APPVERSION}\"" >> $(OUTPUT_INSTALLER)
 	@echo "APPPATH=\""${APPPATH}"\"" >> $(OUTPUT_INSTALLER)
-	@echo "LOAD_PARAMS=\"${APP_LOAD_PARAMS}\"" >> $(OUTPUT_INSTALLER)
-	@echo "DELETE_PARAMS=\"${APP_DELETE_PARAMS}\"" >> $(OUTPUT_INSTALLER)
+	@echo "LOAD_PARAMS=($$(echo "${APP_LOAD_PARAMS}" | sed -e "s|"${APPNAME}"|\""${APPNAME}"\"|"))" >> $(OUTPUT_INSTALLER)
+	@echo "DELETE_PARAMS=($$(echo "${COMMON_DELETE_PARAMS}" | sed -e "s|"${APPNAME}"|\""${APPNAME}"\"|"))" >> $(OUTPUT_INSTALLER)
 	@echo "APPHEX=\"" >> $(OUTPUT_INSTALLER)
 	@cat $(CURDIR)/bin/app.hex >> $(OUTPUT_INSTALLER)
 	@echo "\"" >> $(OUTPUT_INSTALLER)
@@ -76,13 +76,13 @@ ifneq ($(TARGET_NAME),TARGET_NANOS)
 DEFINES += SUBSTRATE_PARSER_FULL
 endif
 APPNAME = "Polkadex"
-APPPATH = "44'/799'"  --path "44'/354'"
+APPPATH = "44'/799'" --path "44'/354'"
 
 else ifeq ($(COIN),PDEX_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "Polkadex XL"
-APPPATH = "44'/799'"  --path "44'/354'"
+APPPATH = "44'/799'" --path "44'/354'"
 
 else
 define error_message
@@ -95,8 +95,7 @@ endef
 $(error "$(error_message)")
 endif
 
-APP_LOAD_PARAMS = --curve ed25519 --delete $(COMMON_LOAD_PARAMS) --path $(APPPATH)
-APP_DELETE_PARAMS = $(COMMON_DELETE_PARAMS)
+APP_LOAD_PARAMS = --curve ed25519 $(COMMON_LOAD_PARAMS) --path $(APPPATH)
 
 ifeq ($(TARGET_NAME),TARGET_NANOS)
 APP_LOAD_PARAMS += --appFlags 0x000
