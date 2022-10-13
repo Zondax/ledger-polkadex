@@ -28,7 +28,7 @@ Please:
 - **Do not use in production**
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
-# Polkadex  2.276.x
+# Polkadex  2.277.x
 
 ## System
 
@@ -52,6 +52,7 @@ Please:
 |As derivative |    |   |   | `u16` index <br/>`Call` call <br/> |
 |Batch all | :heavy_check_mark:  | :heavy_check_mark: |   | `VecCall` calls <br/> |
 |Dispatch as |    |   |   | `BoxPalletsOrigin` as_origin <br/>`Call` call <br/> |
+|Force batch | :heavy_check_mark:  | :heavy_check_mark: |   | `VecCall` calls <br/> |
 
 ## Babe
 
@@ -98,10 +99,10 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> |
+|Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfMinerConfig` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> |
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> |
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
-|Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/> |
+|Submit |    |   |   | `BoxRawSolutionSolutionOfMinerConfig` raw_solution <br/> |
 |Governance fallback |    |   |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
 
 ## Staking
@@ -172,7 +173,7 @@ Please:
 |Remove voter |    | :heavy_check_mark: |   |  |
 |Submit candidacy |    | :heavy_check_mark: |   | `Compactu32` candidate_count <br/> |
 |Renounce candidacy |    |   |   | `Renouncing` renouncing <br/> |
-|Remove member |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`bool` has_replacement <br/> |
+|Remove member |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`bool` slash_bond <br/>`bool` rerun_election <br/> |
 |Clean defunct voters |    | :heavy_check_mark: |   | `u32` num_voters <br/>`u32` num_defunct <br/> |
 
 ## TechnicalMembership
@@ -202,6 +203,8 @@ Please:
 |Propose spend |    | :heavy_check_mark: |   | `CompactBalance` amount <br/>`LookupasStaticLookupSource` beneficiary <br/> |
 |Reject proposal |    | :heavy_check_mark: |   | `Compactu32` proposal_id <br/> |
 |Approve proposal |    | :heavy_check_mark: |   | `Compactu32` proposal_id <br/> |
+|Spend |    | :heavy_check_mark: |   | `CompactBalance` amount <br/>`LookupasStaticLookupSource` beneficiary <br/> |
+|Remove approval |    | :heavy_check_mark: |   | `Compactu32` proposal_id <br/> |
 
 ## Sudo
 
@@ -301,6 +304,25 @@ Please:
 |Close bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> |
 |Extend bounty expiry |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/>`Bytes` remark <br/> |
 
+## OrmlVesting
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Claim |    |   |   |  |
+|Vested transfer |    |   |   | `LookupasStaticLookupSource` dest <br/>`VestingScheduleOf` schedule <br/> |
+|Update vesting schedules |    |   |   | `LookupasStaticLookupSource` who <br/>`VecVestingScheduleOf` vesting_schedules <br/> |
+|Claim for |    |   |   | `LookupasStaticLookupSource` dest <br/> |
+
+## PDEXMigration
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Set migration operational status |    |   |   | `bool` status <br/> |
+|Set relayer status |    |   |   | `AccountId` relayer <br/>`bool` status <br/> |
+|Mint |    |   |   | `AccountId` beneficiary <br/>`Balance` amount <br/>`Hash` eth_tx <br/> |
+|Unlock |    |   |   |  |
+|Remove minted tokens |    |   |   | `AccountId` beneficiary <br/> |
+
 ## Democracy
 
 | Name        | Light | XL | Nesting | Arguments |
@@ -321,8 +343,8 @@ Please:
 |Clear public proposals |    |   |   |  |
 |Note preimage |    |   |   | `Bytes` encoded_proposal <br/> |
 |Note preimage operational |    |   |   | `Bytes` encoded_proposal <br/> |
-|Note imminent preimage |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
-|Note imminent preimage operational |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> |
+|Note imminent preimage |    |   |   | `Bytes` encoded_proposal <br/> |
+|Note imminent preimage operational |    |   |   | `Bytes` encoded_proposal <br/> |
 |Reap preimage |    |   |   | `Hash` proposal_hash <br/>`Compactu32` proposal_len_upper_bound <br/> |
 |Unlock |    |   |   | `AccountId` target <br/> |
 |Remove vote |    |   |   | `ReferendumIndex` index <br/> |
@@ -352,22 +374,96 @@ Please:
 |Claim child bounty |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
 |Close child bounty |    |   |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
 
-## OrmlVesting
+## Assets
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Claim |    |   |   |  |
-|Vested transfer |    |   |   | `LookupasStaticLookupSource` dest <br/>`VestingScheduleOf` schedule <br/> |
-|Update vesting schedules |    |   |   | `LookupasStaticLookupSource` who <br/>`VecVestingScheduleOf` vesting_schedules <br/> |
-|Claim for |    |   |   | `LookupasStaticLookupSource` dest <br/> |
+|Create |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` admin <br/>`Balance` min_balance <br/> |
+|Force create |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`bool` is_sufficient <br/>`Compactu128` min_balance <br/> |
+|Destroy |    |   |   | `Compactu128` id <br/>`DestroyWitness` witness <br/> |
+|Mint |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` beneficiary <br/>`Compactu128` amount <br/> |
+|Burn |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` who <br/>`Compactu128` amount <br/> |
+|Transfer |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` target <br/>`Compactu128` amount <br/> |
+|Transfer keep alive |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` target <br/>`Compactu128` amount <br/> |
+|Force transfer |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` source <br/>`LookupasStaticLookupSource` dest <br/>`Compactu128` amount <br/> |
+|Freeze |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` who <br/> |
+|Thaw |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` who <br/> |
+|Freeze asset |    |   |   | `Compactu128` id <br/> |
+|Thaw asset |    |   |   | `Compactu128` id <br/> |
+|Transfer ownership |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/> |
+|Set team |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` issuer <br/>`LookupasStaticLookupSource` admin <br/>`LookupasStaticLookupSource` freezer <br/> |
+|Set metadata |    |   |   | `Compactu128` id <br/>`Vecu8` name <br/>`Vecu8` symbol <br/>`u8` decimals <br/> |
+|Clear metadata |    |   |   | `Compactu128` id <br/> |
+|Force set metadata |    |   |   | `Compactu128` id <br/>`Vecu8` name <br/>`Vecu8` symbol <br/>`u8` decimals <br/>`bool` is_frozen <br/> |
+|Force clear metadata |    |   |   | `Compactu128` id <br/> |
+|Force asset status |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`LookupasStaticLookupSource` issuer <br/>`LookupasStaticLookupSource` admin <br/>`LookupasStaticLookupSource` freezer <br/>`Compactu128` min_balance <br/>`bool` is_sufficient <br/>`bool` is_frozen <br/> |
+|Approve transfer |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` delegate <br/>`Compactu128` amount <br/> |
+|Cancel approval |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` delegate <br/> |
+|Force cancel approval |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`LookupasStaticLookupSource` delegate <br/> |
+|Transfer approved |    |   |   | `Compactu128` id <br/>`LookupasStaticLookupSource` owner <br/>`LookupasStaticLookupSource` destination <br/>`Compactu128` amount <br/> |
+|Touch |    |   |   | `Compactu128` id <br/> |
+|Refund |    |   |   | `Compactu128` id <br/>`bool` allow_burn <br/> |
 
-## PDEXMigration
+## OCEX
 
 | Name        | Light | XL | Nesting | Arguments |
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Set migration operational status |    |   |   | `bool` status <br/> |
-|Set relayer status |    |   |   | `AccountId` relayer <br/>`bool` status <br/> |
-|Mint |    |   |   | `AccountId` beneficiary <br/>`Balance` amount <br/>`Hash` eth_tx <br/> |
-|Unlock |    |   |   |  |
-|Remove minted tokens |    |   |   | `AccountId` beneficiary <br/> |
+|Register main account |    |   |   | `AccountId` proxy <br/> |
+|Add proxy account |    |   |   | `AccountId` proxy <br/> |
+|Close trading pair |    |   |   | `AssetId` base <br/>`AssetId` quote <br/> |
+|Open trading pair |    |   |   | `AssetId` base <br/>`AssetId` quote <br/> |
+|Register trading pair |    |   |   | `AssetId` base <br/>`AssetId` quote <br/>`Balance` min_order_price <br/>`Balance` max_order_price <br/>`Balance` min_order_qty <br/>`Balance` max_order_qty <br/>`Balance` price_tick_size <br/>`Balance` qty_step_size <br/> |
+|Update trading pair |    |   |   | `AssetId` base <br/>`AssetId` quote <br/>`Balance` min_order_price <br/>`Balance` max_order_price <br/>`Balance` min_order_qty <br/>`Balance` max_order_qty <br/>`Balance` price_tick_size <br/>`Balance` qty_step_size <br/> |
+|Deposit |    |   |   | `AssetId` asset <br/>`Balance` amount <br/> |
+|Remove proxy account |    |   |   | `AccountId` proxy <br/> |
+|Submit snapshot |    |   |   | `EnclaveSnapshotAccountIdWithdrawalLimitAssetsLimitSnapshotAccLimit` snapshot <br/>`Signature` signature <br/> |
+|Insert enclave |    |   |   | `AccountId` encalve <br/> |
+|Collect fees |    |   |   | `u32` snapshot_id <br/>`AccountId` beneficiary <br/> |
+|Shutdown |    |   |   |  |
+|Set exchange state |    |   |   | `bool` state <br/> |
+|Set balances |    |   |   | `BoundedVecpolkadex_primitivesingressHandleBalanceAccountIdpolkadex_primitivesingressHandleBalanceLimit` change_in_balances <br/> |
+|Claim withdraw |    |   |   | `u32` snapshot_id <br/>`AccountId` account <br/> |
+|Register enclave |    |   |   | `Vecu8` ias_report <br/> |
+|Allowlist token |    |   |   | `AssetId` token_add <br/> |
+|Remove allowlisted token |    |   |   | `AssetId` token <br/> |
+|Allowlist enclave |    |   |   | `AccountId` enclave_account_id <br/> |
+|Update certificate |    |   |   | `u64` certificate_valid_until <br/> |
+
+## OrderbookCommittee
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Set members |    |   |   | `VecAccountId` new_members <br/>`OptionAccountId` prime <br/>`MemberCount` old_count <br/> |
+|Execute |    |   |   | `Proposal` proposal <br/>`Compactu32` length_bound <br/> |
+|Propose |    |   |   | `Compactu32` threshold <br/>`Proposal` proposal <br/>`Compactu32` length_bound <br/> |
+|Vote |    |   |   | `Hash` proposal <br/>`Compactu32` index <br/>`bool` approve <br/> |
+|Close |    |   |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> |
+|Disapprove proposal |    |   |   | `Hash` proposal_hash <br/> |
+
+## ChainBridge
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Set threshold |    |   |   | `u32` threshold <br/> |
+|Set resource |    |   |   | `H256` id <br/>`Vecu8` method <br/> |
+|Remove resource |    |   |   | `H256` id <br/> |
+|Allowlist chain |    |   |   | `BridgeChainId` id <br/> |
+|Add relayer |    |   |   | `AccountId` v <br/> |
+|Remove relayer |    |   |   | `AccountId` v <br/> |
+|Acknowledge proposal |    |   |   | `DepositNonce` nonce <br/>`BridgeChainId` src_id <br/>`H256` r_id <br/>`BoxTasConfigProposal` call <br/> |
+|Reject proposal |    |   |   | `DepositNonce` nonce <br/>`BridgeChainId` src_id <br/>`H256` r_id <br/>`BoxTasConfigProposal` call <br/> |
+|Eval vote state |    |   |   | `DepositNonce` nonce <br/>`BridgeChainId` src_id <br/>`BoxTasConfigProposal` prop <br/> |
+
+## AssetHandler
+
+| Name        | Light | XL | Nesting | Arguments |
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Create asset |    |   |   | `BridgeChainId` chain_id <br/>`H160` contract_add <br/> |
+|Mint asset |    |   |   | `Vecu8` destination_add <br/>`u128` amount <br/>`H256` rid <br/> |
+|Set bridge status |    |   |   | `bool` status <br/> |
+|Set block delay |    |   |   | `BlockNumber` no_of_blocks <br/> |
+|Withdraw |    |   |   | `BridgeChainId` chain_id <br/>`H160` contract_add <br/>`Balance` amount <br/>`H160` recipient <br/> |
+|Update fee |    |   |   | `BridgeChainId` chain_id <br/>`Balance` min_fee <br/>`u32` fee_scale <br/> |
+|Allowlist token |    |   |   | `H160` token_add <br/> |
+|Remove allowlisted token |    |   |   | `H160` token_add <br/> |
 
