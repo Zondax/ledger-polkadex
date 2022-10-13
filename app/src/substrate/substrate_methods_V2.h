@@ -45,7 +45,6 @@ extern "C" {
 #define PD_CALL_PROXY_V2 25
 #define PD_CALL_MULTISIG_V2 26
 #define PD_CALL_BOUNTIES_V2 27
-#define PD_CALL_DEMOCRACY_V2 30
 
 #define PD_CALL_UTILITY_BATCH_V2 0
 typedef struct {
@@ -56,6 +55,11 @@ typedef struct {
 typedef struct {
     pd_VecCall_t calls;
 } pd_utility_batch_all_V2_t;
+
+#define PD_CALL_UTILITY_FORCE_BATCH_V2 4
+typedef struct {
+    pd_VecCall_t calls;
+} pd_utility_force_batch_V2_t;
 
 #define PD_CALL_BALANCES_TRANSFER_ALL_V2 4
 typedef struct {
@@ -345,7 +349,8 @@ typedef struct {
 #define PD_CALL_ELECTIONS_REMOVE_MEMBER_V2 4
 typedef struct {
     pd_LookupasStaticLookupSource_V2_t who;
-    pd_bool_t has_replacement;
+    pd_bool_t slash_bond;
+    pd_bool_t rerun_election;
 } pd_elections_remove_member_V2_t;
 
 #define PD_CALL_ELECTIONS_CLEAN_DEFUNCT_VOTERS_V2 5
@@ -410,6 +415,17 @@ typedef struct {
 typedef struct {
     pd_Compactu32_t proposal_id;
 } pd_treasury_approve_proposal_V2_t;
+
+#define PD_CALL_TREASURY_SPEND_V2 3
+typedef struct {
+    pd_CompactBalance_t amount;
+    pd_LookupasStaticLookupSource_V2_t beneficiary;
+} pd_treasury_spend_V2_t;
+
+#define PD_CALL_TREASURY_REMOVE_APPROVAL_V2 4
+typedef struct {
+    pd_Compactu32_t proposal_id;
+} pd_treasury_remove_approval_V2_t;
 
 #define PD_CALL_SUDO_SUDO_V2 0
 typedef struct {
@@ -625,21 +641,12 @@ typedef struct {
     pd_Bytes_t remark;
 } pd_bounties_extend_bounty_expiry_V2_t;
 
-#define PD_CALL_DEMOCRACY_NOTE_IMMINENT_PREIMAGE_V2 16
-typedef struct {
-    pd_Bytes_t encoded_proposal;
-} pd_democracy_note_imminent_preimage_V2_t;
-
-#define PD_CALL_DEMOCRACY_NOTE_IMMINENT_PREIMAGE_OPERATIONAL_V2 17
-typedef struct {
-    pd_Bytes_t encoded_proposal;
-} pd_democracy_note_imminent_preimage_operational_V2_t;
-
 #endif
 
 typedef union {
     pd_utility_batch_V2_t utility_batch_V2;
     pd_utility_batch_all_V2_t utility_batch_all_V2;
+    pd_utility_force_batch_V2_t utility_force_batch_V2;
     pd_balances_transfer_all_V2_t balances_transfer_all_V2;
     pd_staking_bond_V2_t staking_bond_V2;
     pd_staking_bond_extra_V2_t staking_bond_extra_V2;
@@ -704,6 +711,8 @@ typedef union {
     pd_treasury_propose_spend_V2_t treasury_propose_spend_V2;
     pd_treasury_reject_proposal_V2_t treasury_reject_proposal_V2;
     pd_treasury_approve_proposal_V2_t treasury_approve_proposal_V2;
+    pd_treasury_spend_V2_t treasury_spend_V2;
+    pd_treasury_remove_approval_V2_t treasury_remove_approval_V2;
     pd_sudo_sudo_V2_t sudo_sudo_V2;
     pd_sudo_sudo_unchecked_weight_V2_t sudo_sudo_unchecked_weight_V2;
     pd_sudo_set_key_V2_t sudo_set_key_V2;
@@ -742,8 +751,6 @@ typedef union {
     pd_bounties_claim_bounty_V2_t bounties_claim_bounty_V2;
     pd_bounties_close_bounty_V2_t bounties_close_bounty_V2;
     pd_bounties_extend_bounty_expiry_V2_t bounties_extend_bounty_expiry_V2;
-    pd_democracy_note_imminent_preimage_V2_t democracy_note_imminent_preimage_V2;
-    pd_democracy_note_imminent_preimage_operational_V2_t democracy_note_imminent_preimage_operational_V2;
 #endif
 } pd_MethodBasic_V2_t;
 
