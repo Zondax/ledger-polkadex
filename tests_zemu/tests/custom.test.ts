@@ -107,10 +107,8 @@ test.concurrent.each(models)('balances transfer expert', async function (m) {
     const pathChange = 0x80000000
     const pathIndex = 0x80000000
 
-    // Change to expert mode so we can skip fields
-    await sim.clickRight()
-    await sim.clickBoth()
-    await sim.clickLeft()
+    // Change to expert mode
+    await sim.toggleExpertMode()
 
     const txBlob = Buffer.from(txBalances_transfer, 'hex')
 
