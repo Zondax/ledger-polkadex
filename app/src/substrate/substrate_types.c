@@ -155,6 +155,8 @@ parser_error_t _readCall(parser_context_t* c, pd_Call_t* v)
 
 parser_error_t _readHeader(parser_context_t* c, pd_Header_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -266,6 +268,7 @@ parser_error_t _toStringbool(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
 
     *pageCount = 1;
     switch (*v) {
@@ -529,6 +532,7 @@ parser_error_t _toStringHeader(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
