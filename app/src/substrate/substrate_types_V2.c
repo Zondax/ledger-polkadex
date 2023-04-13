@@ -70,36 +70,50 @@ parser_error_t _readAccountVote_V2(parser_context_t* c, pd_AccountVote_V2_t* v)
 
 parser_error_t _readAuthorityIdasRuntimeAppPublicSignature_V2(parser_context_t* c, pd_AuthorityIdasRuntimeAppPublicSignature_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readBoxCallOrHashOfT_V2(parser_context_t* c, pd_BoxCallOrHashOfT_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readBoxEquivocationProofHashBlockNumber_V2(parser_context_t* c, pd_BoxEquivocationProofHashBlockNumber_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readBoxEquivocationProofHeader_V2(parser_context_t* c, pd_BoxEquivocationProofHeader_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readBoxIdentityInfoMaxAdditionalFields_V2(parser_context_t* c, pd_BoxIdentityInfoMaxAdditionalFields_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readBoxPalletsOrigin_V2(parser_context_t* c, pd_BoxPalletsOrigin_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readBoxRawSolutionSolutionOfT_V2(parser_context_t* c, pd_BoxRawSolutionSolutionOfT_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -197,6 +211,8 @@ parser_error_t _readConviction_V2(parser_context_t* c, pd_Conviction_V2_t* v)
 
 parser_error_t _readElectionScore_V2(parser_context_t* c, pd_ElectionScore_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -209,21 +225,29 @@ parser_error_t _readEraIndex_V2(parser_context_t* c, pd_EraIndex_V2_t* v)
 
 parser_error_t _readHeartbeatBlockNumber_V2(parser_context_t* c, pd_HeartbeatBlockNumber_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readIdentityFields_V2(parser_context_t* c, pd_IdentityFields_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readJudgementBalanceOfT_V2(parser_context_t* c, pd_JudgementBalanceOfT_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readKeyOwnerProof_V2(parser_context_t* c, pd_KeyOwnerProof_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -275,6 +299,8 @@ parser_error_t _readMemberCount_V2(parser_context_t* c, pd_MemberCount_V2_t* v)
 
 parser_error_t _readNextConfigDescriptor_V2(parser_context_t* c, pd_NextConfigDescriptor_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -326,6 +352,8 @@ parser_error_t _readRegistrarIndex_V2(parser_context_t* c, pd_RegistrarIndex_V2_
 
 parser_error_t _readRenouncing_V2(parser_context_t* c, pd_Renouncing_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -344,11 +372,15 @@ parser_error_t _readRewardDestination_V2(parser_context_t* c, pd_RewardDestinati
 
 parser_error_t _readSolutionOrSnapshotSize_V2(parser_context_t* c, pd_SolutionOrSnapshotSize_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readSupportsAccountId_V2(parser_context_t* c, pd_SupportsAccountId_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -361,6 +393,8 @@ parser_error_t _readTimepoint_V2(parser_context_t* c, pd_Timepoint_V2_t* v)
 
 parser_error_t _readTupleAccountIdData_V2(parser_context_t* c, pd_TupleAccountIdData_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -374,6 +408,8 @@ parser_error_t _readValidatorPrefs_V2(parser_context_t* c, pd_ValidatorPrefs_V2_
 
 parser_error_t _readVestingScheduleOf_V2(parser_context_t* c, pd_VestingScheduleOf_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -399,11 +435,15 @@ parser_error_t _readWeight_V2(parser_context_t* c, pd_Weight_V2_t* v)
 
 parser_error_t _readschedulePeriodBlockNumber_V2(parser_context_t* c, pd_schedulePeriodBlockNumber_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
 parser_error_t _readschedulePriority_V2(parser_context_t* c, pd_schedulePriority_V2_t* v)
 {
+    UNUSED(c);
+    UNUSED(v);
     return parser_not_supported;
 }
 
@@ -632,6 +672,7 @@ parser_error_t _toStringAuthorityIdasRuntimeAppPublicSignature_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -643,6 +684,7 @@ parser_error_t _toStringBoxCallOrHashOfT_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -654,6 +696,7 @@ parser_error_t _toStringBoxEquivocationProofHashBlockNumber_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -665,6 +708,7 @@ parser_error_t _toStringBoxEquivocationProofHeader_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -676,6 +720,7 @@ parser_error_t _toStringBoxIdentityInfoMaxAdditionalFields_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -687,6 +732,7 @@ parser_error_t _toStringBoxPalletsOrigin_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -698,6 +744,7 @@ parser_error_t _toStringBoxRawSolutionSolutionOfT_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -839,6 +886,7 @@ parser_error_t _toStringConviction_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
 
     *pageCount = 1;
     switch (v->value) {
@@ -875,6 +923,7 @@ parser_error_t _toStringElectionScore_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -896,6 +945,7 @@ parser_error_t _toStringHeartbeatBlockNumber_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -907,6 +957,7 @@ parser_error_t _toStringIdentityFields_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -918,6 +969,7 @@ parser_error_t _toStringJudgementBalanceOfT_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -929,6 +981,7 @@ parser_error_t _toStringKeyOwnerProof_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -940,6 +993,7 @@ parser_error_t _toStringKeyValue_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
 
     return parser_print_not_supported;
 }
@@ -952,6 +1006,7 @@ parser_error_t _toStringKey_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
 
     return parser_print_not_supported;
 }
@@ -1016,6 +1071,7 @@ parser_error_t _toStringNextConfigDescriptor_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1077,6 +1133,7 @@ parser_error_t _toStringProxyType_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     *pageCount = 1;
     switch (v->value) {
     case 0:
@@ -1125,6 +1182,7 @@ parser_error_t _toStringRenouncing_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1169,6 +1227,7 @@ parser_error_t _toStringSolutionOrSnapshotSize_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1180,6 +1239,7 @@ parser_error_t _toStringSupportsAccountId_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1228,6 +1288,7 @@ parser_error_t _toStringTupleAccountIdData_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1276,6 +1337,7 @@ parser_error_t _toStringVestingScheduleOf_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1287,6 +1349,7 @@ parser_error_t _toStringVote_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
 
     *pageCount = 1;
     switch (v->value) {
@@ -1321,6 +1384,7 @@ parser_error_t _toStringschedulePeriodBlockNumber_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 
@@ -1332,6 +1396,7 @@ parser_error_t _toStringschedulePriority_V2(
     uint8_t* pageCount)
 {
     CLEAN_AND_CHECK()
+    UNUSED(pageIdx);
     return parser_print_not_supported;
 }
 

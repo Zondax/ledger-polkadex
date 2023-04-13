@@ -113,6 +113,8 @@ __Z_INLINE parser_error_t _readMethod_staking_nominate_V2(
 __Z_INLINE parser_error_t _readMethod_staking_chill_V2(
     parser_context_t* c, pd_staking_chill_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -156,6 +158,8 @@ __Z_INLINE parser_error_t _readMethod_session_set_keys_V2(
 __Z_INLINE parser_error_t _readMethod_session_purge_keys_V2(
     parser_context_t* c, pd_session_purge_keys_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -281,12 +285,16 @@ __Z_INLINE parser_error_t _readMethod_staking_increase_validator_count_V2(
 __Z_INLINE parser_error_t _readMethod_staking_force_no_eras_V2(
     parser_context_t* c, pd_staking_force_no_eras_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V2(
     parser_context_t* c, pd_staking_force_new_era_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -308,6 +316,8 @@ __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V2(
 __Z_INLINE parser_error_t _readMethod_staking_force_new_era_always_V2(
     parser_context_t* c, pd_staking_force_new_era_always_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -483,6 +493,8 @@ __Z_INLINE parser_error_t _readMethod_elections_vote_V2(
 __Z_INLINE parser_error_t _readMethod_elections_remove_voter_V2(
     parser_context_t* c, pd_elections_remove_voter_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -555,6 +567,8 @@ __Z_INLINE parser_error_t _readMethod_technicalmembership_set_prime_V2(
 __Z_INLINE parser_error_t _readMethod_technicalmembership_clear_prime_V2(
     parser_context_t* c, pd_technicalmembership_clear_prime_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -628,6 +642,8 @@ __Z_INLINE parser_error_t _readMethod_identity_add_registrar_V2(
 __Z_INLINE parser_error_t _readMethod_identity_clear_identity_V2(
     parser_context_t* c, pd_identity_clear_identity_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -679,6 +695,8 @@ __Z_INLINE parser_error_t _readMethod_identity_remove_sub_V2(
 __Z_INLINE parser_error_t _readMethod_identity_quit_sub_V2(
     parser_context_t* c, pd_identity_quit_sub_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -722,6 +740,8 @@ __Z_INLINE parser_error_t _readMethod_recovery_close_recovery_V2(
 __Z_INLINE parser_error_t _readMethod_recovery_remove_recovery_V2(
     parser_context_t* c, pd_recovery_remove_recovery_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -762,6 +782,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V2(
 __Z_INLINE parser_error_t _readMethod_proxy_remove_proxies_V2(
     parser_context_t* c, pd_proxy_remove_proxies_V2_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -4545,7 +4567,7 @@ parser_error_t _getMethod_ItemValue_V2(
     return parser_ok;
 }
 
-bool _getMethod_ItemIsExpert_V2(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx)
+bool _getMethod_ItemIsExpert_V2(uint8_t moduleIdx, uint8_t callIdx, __Z_UNUSED uint8_t itemIdx)
 {
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 

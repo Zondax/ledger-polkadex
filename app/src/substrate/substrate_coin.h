@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 - 2022 Zondax GmbH
+ *  (c) 2019 - 2023 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -61,11 +61,8 @@ typedef enum {
 #define COIN_NAME "Polkadex"
 #define COIN_TICKER "PDEX "
 
-#define COIN_SECRET_REQUIRED_CLICKS 0
-
 #define MENU_MAIN_APP_LINE1 "Polkadex"
 #define MENU_MAIN_APP_LINE2 "Ready"
-#define MENU_MAIN_APP_LINE2_SECRET "PDEX RECOVERY"
 #define APPVERSION_LINE1 "Polkadex"
 #define APPVERSION_LINE2 "v" APPVERSION
 
